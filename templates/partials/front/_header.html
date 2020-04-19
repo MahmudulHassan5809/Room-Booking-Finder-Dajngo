@@ -1,0 +1,135 @@
+{% load static %}
+
+<!-- start header section -->
+        <header>
+            <div class="navbar-default">
+                <!-- start top search -->
+                <div class="top-search bg-theme">
+                    <div class="container">
+                        <form class="search-form" action="https://www.chitrakootweb.com/template/finders/search.html" method="GET" accept-charset="utf-8">
+                            <div class="input-group">
+                                <span class="input-group-addon cursor-pointer">
+                                    <button class="search-form_submit fas fa-search font-size18 text-white" type="submit"></button>
+                                </span>
+                                <input type="text" class="search-form_input form-control" name="s" autocomplete="off" placeholder="Type & hit enter...">
+                                <span class="input-group-addon close-search"><i class="fas fa-times font-size18 margin-5px-top"></i></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- end top search -->
+
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="menu_area">
+                                <nav class="navbar navbar-expand-lg navbar-light no-padding">
+
+                                    <div class="navbar-header navbar-header-custom">
+                                        <!-- start logo -->
+                                        <a href="index.html" class="navbar-brand width-200px sm-width-180px xs-width-150px"><img id="logo" src="{% static 'front/img/logos/logo.png' %}" alt="logo"></a>
+                                        <!-- end logo -->
+                                    </div>
+
+                                    <div class="navbar-toggler"></div>
+
+                                    <!-- start menu area -->
+                                    <ul class="navbar-nav ml-auto" id="nav" style="display: none;">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="javascript:void(0)">Pages</a>
+                                            <ul>
+                                                <li><a href="how-it-works.html">How It Works</a></li>
+                                                <li><a href="elements.html">Elements</a></li>
+                                                <li><a href="pricing.html">Pricing</a></li>
+                                                <li><a href="login.html">Login</a></li>
+                                                <li><a href="registration.html">Register</a></li>
+                                                <li><a href="404-page.html">404 Page</a></li>
+                                                <li><a href="coming-soon.html">Coming Soon</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="javascript:void(0)">User Panel</a>
+                                            <ul>
+                                                <li><a href="admin/index.html">Dashboard</a></li>
+                                                <li><a href="admin/message.html">Message</a></li>
+                                                <li><a href="admin/booking.html">Booking</a></li>
+                                                <li><a href="admin/wallet.html">Wallet</a></li>
+                                                <li><a href="admin/my-listing.html">My Listing</a></li>
+                                                <li><a href="admin/reviews.html">Reviews</a></li>
+                                                <li><a href="admin/bookmark.html">Bookmarks</a></li>
+                                                <li><a href="admin/add-listing.html">Add Listing</a></li>
+                                                <li><a href="admin/my-profile.html">My Profile</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="has-sub"><span class="submenu-button"></span><span class="submenu-button"></span><a href="#">Listing</a>
+                                            <ul class="row megamenu change-menu sub-menu">
+                                                <li class="col-lg-3 col-sm-12 has-sub"><span class="submenu-button"></span><span class="submenu-button"></span>
+                                                    <span class="margin-10px-bottom display-block sm-no-margin sm-padding-10px-tb sm-padding-30px-lr font-size14 sub-title font-weight-600"><i class="fas fa-address-book margin-10px-right text-theme-color"></i>Listing Without Map</span>
+                                                    <ul class="sub-menu">
+                                                        <li><a href="listing-grid-right-sidebar.html">Grid Right Sidebar</a></li>
+                                                        <li><a href="listing-grid-full-width.html">Grid Fullwidth</a></li>
+                                                        <li><a href="listing-list-right-sidebar.html">List Right Sidebar</a></li>
+                                                        <li><a href="listing-list-full-width.html">List Fullwidth</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="col-lg-3 col-sm-12 has-sub"><span class="submenu-button"></span><span class="submenu-button"></span>
+                                                    <span class="margin-10px-bottom display-block sm-no-margin sm-padding-10px-tb sm-padding-30px-lr font-size14 sub-title font-weight-600"><i class="fas fa-map margin-10px-right text-theme-color"></i>Half Screen Map</span>
+                                                    <ul class="sub-menu">
+                                                        <li><a href="listing-half-screen-map-list.html">List Layout</a></li>
+                                                        <li><a href="listing-half-screen-map-grid.html">Grid Layout</a></li>
+                                                    </ul>
+                                                    <span class="margin-10px-bottom margin-30px-top display-block sm-no-margin sm-padding-10px-tb sm-padding-30px-lr font-size14 text-uppercase sub-title font-weight-600"><i class="fas fa-file-alt margin-10px-right text-theme-color"></i>Single Listing</span>
+                                                    <ul class="sub-menu">
+                                                        <li><a href="listing-details.html">Listing Details</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="col-lg-3 col-sm-12 has-sub"><span class="submenu-button"></span><span class="submenu-button"></span>
+                                                    <span class="margin-10px-bottom display-block sm-no-margin sm-padding-10px-tb sm-padding-30px-lr font-size14 sub-title font-weight-600"><i class="fas fa-th-large margin-10px-right text-theme-color"></i>Listing Grid</span>
+                                                    <ul class="sub-menu">
+                                                        <li><a href="listing-grid-left-sidebar-map.html">Left Sidebar</a></li>
+                                                        <li><a href="listing-grid-right-sidebar-map.html">Right Sidebar</a></li>
+                                                        <li><a href="listing-grid-full-width-map.html">Fullwidth</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="col-lg-3 col-sm-12 has-sub"><span class="submenu-button"></span><span class="submenu-button"></span>
+                                                    <span class="margin-10px-bottom display-block sm-no-margin sm-padding-10px-tb sm-padding-30px-lr font-size14 sub-title font-weight-600"><i class="fas fa-bars margin-10px-right text-theme-color"></i>Listing List</span>
+                                                    <ul class="sub-menu">
+                                                        <li><a href="listing-list-left-sidebar-map.html">Left Sidebar</a></li>
+                                                        <li><a href="listing-list-right-sidebar-map.html">Right Sidebar</a></li>
+                                                        <li><a href="listing-list-full-width-map.html">Fullwidth</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="javascript:void(0)">Blog</a>
+                                            <ul>
+                                                <li><a href="blog-grid.html">Blog Grid</a></li>
+                                                <li><a href="blog-details.html">Blog Details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact-us.html">Contact</a></li>
+                                    </ul>
+                                    <!-- end menu area -->
+
+                                    <!-- start attribute navigation -->
+                                    <div class="attr-nav sm-no-margin sm-margin-65px-right xs-margin-55px-right ml-auto">
+                                        <ul class="search">
+                                            <li class="search"><a href="javascript:void(0)"><i class="fas fa-search text-theme-color font-size18 margin-15px-top sm-no-margin-top"></i></a></li>
+                                        </ul>
+                                        <ul class="top-nav-area">
+                                            <li class="dropdown sm-no-margin-right">
+                                                <a href="add-listing.html" class="butn listi md-padding-15px-lr sm-no-padding">
+                                                    <i class="fas fa-plus-circle font-size22 margin-5px-right sm-no-margin-right vertical-align-middle"></i> <span class="vertical-align-middle sm-display-none">Add Listing</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- end attribute navigation -->
+
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- end header section -->

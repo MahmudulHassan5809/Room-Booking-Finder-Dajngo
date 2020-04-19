@@ -1,0 +1,159 @@
+{% extends "dash_base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+                        <div class="col-xl-3 col-lg-6 col-md-6">
+                            <div class="card card-white stats-widget">
+                                <div class="card-body">
+                                    <div class="float-left">
+                                        <span class="stats-number countup">813</span>
+                                        <p class="stats-info">Total Profit</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <i class="fas fa-dollar-sign text-primary stats-icon"></i>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="progress mb-0 mt-3">
+                                        <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                            <span class="sr-only">60% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 col-md-6">
+                            <div class="card card-white stats-widget">
+                                <div class="card-body">
+                                    <div class="float-left">
+                                        <span class="stats-number countup">505</span>
+                                        <p class="stats-info">Feedbacks</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <i class="fas fa-download stats-icon text-danger"></i>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="progress mb-0 mt-3">
+                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+                                            <span class="sr-only">20% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 col-md-6">
+                            <div class="card card-white stats-widget">
+                                <div class="card-body">
+                                    <div class="float-left">
+                                        <span class="stats-number countup">967</span>
+                                        <p class="stats-info">New Orders</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <i class="fas fa-user-plus stats-icon text-warning"></i>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="progress mb-0 mt-3">
+                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+                                            <span class="sr-only">40% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 col-md-6">
+                            <div class="card card-white stats-widget">
+                                <div class="card-body">
+                                    <div class="float-left">
+                                        <span class="stats-number countup">991</span>
+                                        <p class="stats-info">New Users</p>
+                                    </div>
+                                    <div class="float-right">
+                                        <i class="fas fa-tasks stats-icon text-success"></i>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="progress mb-0 mt-3">
+                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100" style="width: 58%;">
+                                            <span class="sr-only">58% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card card-white">
+                                <div class="card-heading clearfix">
+                                    <h4 class="card-title">Invoices</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive invoice-table">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">1236</th>
+                                                    <td>Jamara Karle</td>
+                                                    <td>Twitter</td>
+                                                    <td><span class="label label-success">Finished</span></td>
+                                                    <td>$6543</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">6874</th>
+                                                    <td>Keir Prestonly</td>
+                                                    <td>Instagram</td>
+                                                    <td><span class="label label-success">Finished</span></td>
+                                                    <td>$7114</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">3421</th>
+                                                    <td>Finley Walkeror</td>
+                                                    <td>Facebook</td>
+                                                    <td><span class="label label-danger">Denied</span></td>
+                                                    <td>$2685</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">9500</th>
+                                                    <td>Stepha Kruse</td>
+                                                    <td>Youtube</td>
+                                                    <td><span class="label label-warning">Pending</span></td>
+                                                    <td>$5900</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">7854</th>
+                                                    <td>Alivin Corondo</td>
+                                                    <td>Facebook</td>
+                                                    <td><span class="label label-default">Upcoming</span></td>
+                                                    <td>$6712</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">9870</th>
+                                                    <td>Dunican keithly</td>
+                                                    <td>Instagram</td>
+                                                    <td><span class="label label-default">Upcoming</span></td>
+                                                    <td>$1099</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{% endblock content %}
