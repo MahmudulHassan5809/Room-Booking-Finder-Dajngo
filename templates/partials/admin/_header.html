@@ -36,12 +36,10 @@
                                <li class="dropdown user-dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{% static 'front/img/avatars/user-dropdown.jpg' %}" alt="" class="rounded-circle"></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Profile</a></li>
-                                        <li><a href="#">Calendar</a></li>
-                                        <li><a href="#"><span class="badge float-right badge-danger">42</span>Messages</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="#">Account Settings</a></li>
-                                        <li><a href="#">Log Out</a></li>
+                                        {% if user.is_authenticated %}
+                                            <li><a href="{% url 'accounts:my_profile' %}">Profile</a></li>
+                                            <li><a href="{% url 'accounts:logout' %}">Log Out</a></li>
+                                        {% endif %}
                                     </ul>
                                 </li>
                             </ul>

@@ -6,7 +6,8 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
-from accounts.forms import SignUpForm
+from accounts.forms import SignUpForm, UpdateProfile
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from .mixins import AictiveUserRequiredMixin
 from django.views import View, generic
@@ -30,11 +31,11 @@ class RegisterView(View):
             user.refresh_from_db()
             user.user_profile.phone_number = signup_form.cleaned_data.get(
                 'phone_number')
-            user.user_profile.city = signup_form.cleaned_data.get('city')
+            user.user_profile.address = signup_form.cleaned_data.get('address')
             user.save()
 
             current_site = get_current_site(request)
-            subject = 'Activate Your MySite Account'
+            subject = 'Activate Your Account'
             message = render_to_string('acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -76,3 +77,69 @@ class Dashboard(AictiveUserRequiredMixin, View):
             'title': 'Dashboard'
         }
         return render(request, 'accounts/dashboard.html', context)
+
+
+class MyProfile(AictiveUserRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        update_profile_form = UpdateProfile(request=request)
+        chanage_password_form = PasswordChangeForm(user=request.user)
+        context = {
+            'title': 'My Profile',
+            'update_profile_form': update_profile_form,
+            'chanage_password_form': chanage_password_form
+
+        }
+        return render(request, 'accounts/my_profile.html', context)
+
+    def post(self, request, *args, **kwargs):
+
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone_number = request.POST.get('phone_number')
+        address = request.POST.get('address')
+        about = request.POST.get('about')
+        profile_image = request.FILES.get('profile_image')
+
+        if first_name:
+            request.user.first_name = first_name
+        if last_name:
+            request.user.last_name = last_name
+        if phone_number:
+            request.user.user_profile.phone_number = phone_number
+        if address:
+            request.user.user_profile.address = address
+        if about:
+            request.user.user_profile.about = about
+        if profile_image:
+            request.user.user_profile.profile_pic = profile_image
+
+        request.user.save()
+        request.user.user_profile.save()
+
+        messages.success(request, "Profile Updated Successfully")
+        return redirect('accounts:my_profile')
+
+
+class ChangePassword(AictiveUserRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        chanage_password_form = PasswordChangeForm(
+            data=request.POST, user=request.user)
+        update_profile_form = UpdateProfile(request=request)
+        context = {
+            'chanage_password_form': chanage_password_form,
+            'update_profile_form': update_profile_form
+        }
+        if chanage_password_form.is_valid():
+            chanage_password_form.save()
+            update_session_auth_hash(request, chanage_password_form.user)
+            messages.success(request, ('You have Changed Your Password...'))
+            return redirect('accounts:my_profile')
+        else:
+            return render(request, 'accounts/my_profile.html', context)
+
+
+class LogoutView(AictiveUserRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        messages.success(request, ('You Have Been Logged Out..'))
+        return redirect('accounts:login')

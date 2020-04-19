@@ -40,3 +40,28 @@ class SignUpForm(UserCreationForm):
         self.fields['last_name'].required = True
         self.fields['phone_number'].required = True
         self.fields['address'].required = True
+
+
+class UpdateProfile(ModelForm):
+    phone_number = forms.CharField()
+    address = forms.CharField()
+    about = forms.CharField(widget=forms.Textarea(
+        attrs={'rows': 3, 'cols': 40}))
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name',
+                  'phone_number', 'address', 'about',)
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        user = self.request.user
+        super(UpdateProfile, self).__init__(*args, **kwargs)
+
+        self.fields['phone_number'].initial = user.user_profile.phone_number
+        self.fields['first_name'].initial = user.first_name
+        self.fields['last_name'].initial = user.last_name
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['about'].initial = user.user_profile.about
+        self.fields['address'].initial = user.user_profile.address
