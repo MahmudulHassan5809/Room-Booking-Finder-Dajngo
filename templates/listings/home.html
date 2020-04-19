@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block banner %}
+    {% include 'partials/front/_banner.html' %}
+{% endblock banner %}
+
+
+{% block content %}
+    <section>
+            <div class="container">
+                <div class="text-center margin-40px-bottom">
+                    <h3 class="margin-10px-bottom">Find Rooms  Near You</h3>
+                    <p class="no-margin-bottom">Find Rooms In Reasonable Price For Your Night</p>
+                </div>
+                <div class="row">
+                    {% for cat in all_categories %}
+
+
+
+                    <div class="col-md-6 col-lg-4 margin-30px-bottom">
+                        <a href="{% url 'listings:category_rooms' cat.slug %}" class="card bg-img box-hover cover-background border-0 p-4 h-100" data-background="{{cat.image.url}}">
+                            <div class="mt-auto position-relative z-index-9">
+                                <h5 class="text-white">{{cat.name}}</h5>
+                                <hr class="border-color-light-white">
+                                <div class="position-relative z-index-9 text-white"><span class="ti-location-pin text-primary"></span> 6 Locations</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </section>
+{% endblock content %}
