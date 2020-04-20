@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -87,8 +88,12 @@ class Listing(models.Model):
     zip_code = models.CharField(max_length=200)
 
     active = models.BooleanField(default=True)
-    start_time = models.DateTimeField(default=timezone.now)
-    end_time = models.DateTimeField(default=timezone.now)
+    booked = models.BooleanField(default=False)
+
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+
+    tags = TaggableManager()
 
     objects = models.Manager()
     active_objects = ActiveListingManager()
@@ -115,6 +120,21 @@ class ListingImage(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name='listing_images')
     image = models.ImageField(upload_to="product/%Y/%m/%d/")
+
+    def __str__(self):
+        return self.listing.title
+
+
+class ListingExtra(models.Model):
+    STATUS_CHOICES = (
+        ('0', 'No'),
+        ('1', 'Yes'),
+    )
+
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name='listing_extras')
+    facility_name = models.CharField(max_length=255)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
 
     def __str__(self):
         return self.listing.title

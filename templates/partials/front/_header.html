@@ -47,19 +47,7 @@
                                                 <li><a href="coming-soon.html">Coming Soon</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="javascript:void(0)">User Panel</a>
-                                            <ul>
-                                                <li><a href="admin/index.html">Dashboard</a></li>
-                                                <li><a href="admin/message.html">Message</a></li>
-                                                <li><a href="admin/booking.html">Booking</a></li>
-                                                <li><a href="admin/wallet.html">Wallet</a></li>
-                                                <li><a href="admin/my-listing.html">My Listing</a></li>
-                                                <li><a href="admin/reviews.html">Reviews</a></li>
-                                                <li><a href="admin/bookmark.html">Bookmarks</a></li>
-                                                <li><a href="admin/add-listing.html">Add Listing</a></li>
-                                                <li><a href="admin/my-profile.html">My Profile</a></li>
-                                            </ul>
-                                        </li>
+
                                         <li class="has-sub"><span class="submenu-button"></span><span class="submenu-button"></span><a href="#">Listing</a>
                                             <ul class="row megamenu change-menu sub-menu">
                                                 <li class="col-lg-3 col-sm-12 has-sub"><span class="submenu-button"></span><span class="submenu-button"></span>
@@ -106,7 +94,29 @@
                                                 <li><a href="blog-details.html">Blog Details</a></li>
                                             </ul>
                                         </li>
+
+                                        <li><a href="javascript:void(0)">User Panel</a>
+                                            <ul>
+                                                {% if user.is_authenticated %}
+                                                   <li><a href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
+                                                    <li><a href="admin/message.html">Message</a></li>
+                                                    <li><a href="admin/booking.html">Booking</a></li>
+                                                    <li><a href="admin/wallet.html">Wallet</a></li>
+                                                    <li><a href="admin/my-listing.html">My Listing</a></li>
+                                                    <li><a href="admin/reviews.html">Reviews</a></li>
+                                                    <li><a href="admin/bookmark.html">Bookmarks</a></li>
+                                                    <li><a href="admin/add-listing.html">Add Listing</a></li>
+                                                    <li><a href="{% url 'accounts:my_profile' %}">My Profile</a></li>
+                                                     <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                                                {% else %}
+                                                    <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                                                    <li><a href="{% url 'accounts:register' %}">Register</a></li>
+                                                {% endif %}
+
+                                            </ul>
+                                        </li>
                                         <li><a href="contact-us.html">Contact</a></li>
+
                                     </ul>
                                     <!-- end menu area -->
 
@@ -116,11 +126,15 @@
                                             <li class="search"><a href="javascript:void(0)"><i class="fas fa-search text-theme-color font-size18 margin-15px-top sm-no-margin-top"></i></a></li>
                                         </ul>
                                         <ul class="top-nav-area">
+                                            {% if user.is_authenticated %}
+
+
                                             <li class="dropdown sm-no-margin-right">
-                                                <a href="add-listing.html" class="butn listi md-padding-15px-lr sm-no-padding">
-                                                    <i class="fas fa-plus-circle font-size22 margin-5px-right sm-no-margin-right vertical-align-middle"></i> <span class="vertical-align-middle sm-display-none">Add Listing</span>
+                                                <a href="{% url 'accounts:dashboard' %}" class="butn listi md-padding-15px-lr sm-no-padding">
+                                                    <i class="far fa-user-circle font-size22 margin-5px-right sm-no-margin-right vertical-align-middle"></i> <span class="vertical-align-middle sm-display-none">Dashbaord</span>
                                                 </a>
                                             </li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                     <!-- end attribute navigation -->

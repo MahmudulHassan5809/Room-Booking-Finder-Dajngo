@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import escape, mark_safe
-from .models import Category, Listing, ListingImage
+from .models import Category, Listing, ListingImage, ListingExtra
 
 
 # Register your models here.
@@ -22,17 +22,28 @@ class ListingImageInline(admin.StackedInline):
     extra = 0
 
 
+class ListingExtraInline(admin.StackedInline):
+    model = ListingExtra
+    extra = 0
+
+
 class ListingAdmin(admin.ModelAdmin):
-    inlines = [ListingImageInline]
+    inlines = [ListingImageInline, ListingExtraInline]
 
     list_display = ["title", "category",
-                    "status", "price", "active", "end_time"]
+                    "status", "price", "active", "booked", "tag_list", "end_time"]
     search_fields = ('title', 'slug', 'category__name',
-                     'status', 'active')
-    list_filter = ['category__name', 'status', 'active']
+                     'status', 'active','tags__name')
+    list_filter = ['category__name', 'status', 'active', 'booked']
     list_editable = ['active']
     exclude = ['slug']
     list_per_page = 20
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('tags')
+
+    def tag_list(self, obj):
+        return u", ".join(o.name for o in obj.tags.all())
 
     def save_model(self, request, obj, form, change):
         obj.save()

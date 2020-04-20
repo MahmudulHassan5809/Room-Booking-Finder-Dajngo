@@ -17,12 +17,13 @@
                     <p class="no-margin-bottom">Find Rooms In Reasonable Price For Your Night</p>
                 </div>
                 <div class="row">
-                    {% for listing in liting_list %}
+
+                    {% for listing in listing_list %}
 
 
 
                     <div class="col-md-6 col-lg-4 margin-30px-bottom">
-                        <a href="listing-details.html" class="card bg-img box-hover cover-background border-0 p-4 h-100"
+                        <a href="{% url 'listings:listing_details' listing.slug %}" class="card bg-img box-hover cover-background border-0 p-4 h-100"
                         {% with listing.listing_images.all|first as image %}
                             data-background="{{image.image.url}}"
                         {% endwith %}

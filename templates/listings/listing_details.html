@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block banner %}
+    {% include 'partials/front/_page_section.html' %}
+{% endblock banner %}
+
+
+{% block content %}
+    <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 margin-50px-bottom">
+                        <div class="listing-detail margin-50px-bottom sm-margin-35px-bottom">
+                            <h3 class="font-weight-500">{{listing.title}}</h3>
+                            <div>
+                                <ul class="bg-light-gray padding-20px-tb padding-30px-lr rounded">
+                                    <li><a href="#!"><i class="fas fa-map-marked-alt margin-10px-right text-theme-color"></i>{{listing.address}}, {{listing.city}}, {{listing.zip_code}}</a>
+                                    </li>
+                                    <li><a href="#!"><i class="fa fa-phone margin-10px-right text-theme-color"></i>{{listing.owner.user_profile.phone_number}}</a></li>
+                                    <li><span>Open from {{listing.start_time|date:"M d, Y"}} To {{listing.end_time|date:"M d, Y"}}</span></li>
+                                    <li>
+                                        <span>
+                                            <a href="{% url 'listings:user_listing' listing.owner.username %}">{{listing.owner.get_full_name}}'s Others Listing</a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Description</h5>
+                            <p>{{listing.description}}</p>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Facilities</h5>
+                            <div class="row">
+
+                                {% for extra in listing.listing_extras.all %}
+                                   <div class="col-md-3 col-6 xs-margin-10px-bottom">
+                                        {{extra.facility_name}} -- {{extra.get_status_display}}
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Gallery</h5>
+                            <div class="owl-carousel owl-theme listing">
+                                {% for image in listing.listing_images.all %}
+                                    <div>
+                                        <img src="{{image.image.url}}" alt="" />
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Tags</h5>
+                            <ul class="tags margin-30px-bottom">
+                                {% for tag in listing.tags.all %}
+                                   <li>
+                                        <a href="{% url 'listings:tag_listing' tag.slug %}">{{tag.name}}</a>
+                                    </li>
+                                {% endfor %}
+
+
+
+                            </ul>
+                            <div class="row align-items-center">
+                                <div class="col-lg-3 col-md-4">
+                                    <div class="bg-theme padding-30px-tb text-center border-radius-4">
+                                        <h5 class="font-size40 no-margin-bottom text-white">6.6</h5>
+                                        <h6 class="no-margin-bottom text-white font-size18">superb</h6>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-8 mb-30">
+                                    <div class="progress-text">
+                                        <div class="row">
+                                            <div class="col-6">Rating</div>
+                                            <div class="col-6 text-right">18%</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-progress progress1">
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:89%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        <div class="row">
+                                            <div class="col-6">Facilities</div>
+                                            <div class="col-6 text-right">89%</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-progress progress1">
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:30%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        <div class="row">
+                                            <div class="col-6">Staff</div>
+                                            <div class="col-6 text-right">50%</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-progress progress1">
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:45%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        <div class="row">
+                                            <div class="col-6">price</div>
+                                            <div class="col-6 text-right">80%</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-progress progress1">
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:80%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Location</h5>
+                            <iframe class="contact-map" id="gmap_canvas" src="https://maps.google.com/maps?q={{listing.city}}&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                        </div>
+                        <div class="margin-60px-bottom sm-margin-40px-bottom blogs">
+                            <div class="comments-area">
+                                <h5 class="font-size20 border-bottom padding-20px-bottom">Comments</h5>
+                                <div class="comment-box">
+                                    <div class="author-thumb">
+                                        <img src="img/blog/01.png" alt="" class="rounded-circle width-85 xs-width-100" />
+                                    </div>
+                                    <div class="comment-info">
+                                        <h6><a href="javascript:void(0);">Alex Joyrina</a></h6>
+                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                        <div class="reply">
+                                            <a href="javascript:void(0);">
+                                                <i class="fa fa-reply" aria-hidden="true"></i> Reply
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="comment-box">
+                                    <div class="author-thumb">
+                                        <img src="img/blog/02.png" alt="" class="rounded-circle width-85 xs-width-100" />
+                                    </div>
+                                    <div class="comment-info">
+                                        <h6><a href="javascript:void(0);">Jama Karleny</a></h6>
+                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                        <div class="reply">
+                                            <a href="javascript:void(0);">
+                                                <i class="fa fa-reply" aria-hidden="true"></i> Reply
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="comment-box no-border-bottom">
+                                    <div class="author-thumb">
+                                        <img src="img/blog/03.png" alt="" class="rounded-circle width-85 xs-width-100" />
+                                    </div>
+                                    <div class="comment-info">
+                                        <h6><a href="javascript:void(0);">Ivonne Drennen</a></h6>
+                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                        <div class="reply">
+                                            <a href="javascript:void(0);">
+                                                <i class="fa fa-reply" aria-hidden="true"></i> Reply
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comment-form">
+                                <div class="title-g margin-30px-bottom">
+                                    <h3>Post a Comment</h3>
+                                </div>
+                                <form action="#!" id="comment-form" method="post">
+                                    <div class="controls">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <input id="form_name" type="text" name="name" placeholder="Name" required="required">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <input id="form_email" type="email" name="email" placeholder="Email" required="required">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <textarea id="form_message" name="message" placeholder="Message" rows="4" required="required"></textarea>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <button type="submit" class="butn"><span>Send Message</span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+
+                            <div class="side-bar">
+                                <div class="widget">
+                                    <div class="widget-title"><h3>Online Reservation</h3></div>
+                                    <form method="post" action="#!">
+                                        <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <input type="text" name="name" id="res_name" class="form-controllar border-radius-4" placeholder="Full Name">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <input type="email" name="email" id="res_email" class="form-controllar border-radius-4" placeholder="Email">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <input type="text" name="number" id="res_phone" class="form-controllar border-radius-4" placeholder="Phone Number">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                <option selected>Persons No.</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <input type="text" name="date" id="res_date" class="form-controllar border-radius-4" placeholder="Date &amp; Time">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="butn">Submit</button>
+                                        </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="widget">
+                                    <div class="widget-title"><h3>Related Listings</h3></div>
+                                    <div class="listing-grid owl-carousel owl-theme">
+                                        {% for r_listing in related_listings %}
+
+
+                                        <a href="listing-details.html" class="card box-hover transition-none bg-img cover-background border-0 p-4"
+                                        {% with r_listing.listing_images.all|first as image %}
+                                          data-background="{{image.image.url}}"
+                                        {% endwith %}
+                                        >
+                                            <div class="mt-auto z-index-9">
+                                                <h5 class="text-white">{{r_listing.title}}</h5>
+                                                <hr class="border-color-light-white">
+                                                <div class="position-relative z-index-9 text-white"><span class="ti-location-pin text-primary"></span> {{r_listing.area}}--{{r_listing.city}}</div>
+                                            </div>
+                                        </a>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+
+                                <div class="widget">
+                                    <div class="widget-title"><h3>Information</h3>
+                                    <ul class="contact-info mt-4 mb-0">
+                                        <li>
+                                            <i class="fa fa-phone"></i>{{listing.owner.user_profile.phone_number}}
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-envelope"></i> {{listing.owner.email}}
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-map-marker-alt"></i> {{listing.owner.user_profile.address}}
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-globe-asia"></i> www.websiteaname.com
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock content %}
