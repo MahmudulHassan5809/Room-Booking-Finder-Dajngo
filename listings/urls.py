@@ -18,4 +18,7 @@ urlpatterns = [
     path('listing/details/<slug:slug>',
          views.ListingDetails.as_view(), name="listing_details"),
 
+
+    path('listing/add-listing', views.AddListing.as_view(), name="add_listing"),
+
 ]

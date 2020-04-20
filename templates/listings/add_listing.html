@@ -1,0 +1,191 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+     <div class="row">
+        <div class="col-md-12">
+            <div class="card card-white">
+                <div class="card-heading clearfix border-bottom mb-4">
+                    <h4 class="card-title">Basic Information</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                               {{add_listing_form.title|as_crispy_field}}
+
+                            </div>
+                            <div class="col-md-4">
+                                 {{add_listing_form.status|as_crispy_field}}
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                {{add_listing_form.price|as_crispy_field}}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                {{add_listing_form.area|as_crispy_field}}
+                            </div>
+                            <div class="col-md-4">
+                                {{add_listing_form.rooms|as_crispy_field}}
+                            </div>
+                            <div class="col-md-4">
+                                {{add_listing_form.wash_rooms|as_crispy_field}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card card-white">
+                <div class="card-heading clearfix border-bottom mb-4">
+                    <h4 class="card-title">Location</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                {{add_listing_form.city|as_crispy_field}}
+                            </div>
+                            <div class="col-md-6">
+                                {{add_listing_form.zip_code|as_crispy_field}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card card-white">
+                <div class="card-heading clearfix border-bottom mb-4">
+                    <h4 class="card-title">File browser</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form-inline">
+                        <div class="custom-file">
+                            {{add_listing_form.images|as_crispy_field}}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card card-white">
+                <div class="card-heading clearfix border-bottom mb-4">
+                    <h4 class="card-title">Detailed Information</h4>
+                </div>
+                <div class="card-body">
+                    <form class="needs-validation" novalidate>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                               {{add_listing_form.description|as_crispy_field}}
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="card card-white">
+                <div class="card-heading clearfix border-bottom mb-4">
+                    <h4 class="card-title">Amenities (optional)</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        Air Conditioning
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+                                    <label class="form-check-label" for="defaultCheck2">
+                                        Events
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3 mb-md-0">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+                                    <label class="form-check-label" for="defaultCheck3">
+                                        Pet Friendly
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+                                    <label class="form-check-label" for="defaultCheck4">
+                                        Elevator in building
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3 mb-md-0">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
+                                    <label class="form-check-label" for="defaultCheck5">
+                                        Free Wifi
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
+                                    <label class="form-check-label" for="defaultCheck6">
+                                        Free Parking
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3 mb-md-0">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck7">
+                                    <label class="form-check-label" for="defaultCheck7">
+                                        Outdoor Seating
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck8">
+                                    <label class="form-check-label" for="defaultCheck8">
+                                        Instant Book
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck9">
+                                    <label class="form-check-label" for="defaultCheck9">
+                                        Pet Friendly
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock content %}
+
+

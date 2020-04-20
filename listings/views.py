@@ -3,6 +3,8 @@ from datetime import datetime, timedelta, date
 from django.db.models import Q
 from .models import Listing, Category
 from django.contrib.auth.models import User
+from accounts.mixins import AictiveUserRequiredMixin
+from .forms import AddListingForm
 from taggit.models import Tag
 from django.views import generic
 from django.views import View
@@ -111,3 +113,14 @@ class ListingDetails(generic.DetailView):
         context['related_listings'] = list(
             Listing.active_objects.filter(category=self.object.category, active=True))[:3]
         return context
+
+
+class AddListing(AictiveUserRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        add_listing_form = AddListingForm()
+        context = {
+            'title': 'Add Listing',
+            'add_listing_form': add_listing_form
+        }
+
+        return render(request, 'listings/add_listing.html', context)

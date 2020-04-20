@@ -34,7 +34,7 @@
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                <li class="dropdown user-dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{% static 'front/img/avatars/user-dropdown.jpg' %}" alt="" class="rounded-circle"></a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{user.user_profile.profile_pic.url}}" alt="" class="rounded-circle"></a>
                                     <ul class="dropdown-menu">
                                         {% if user.is_authenticated %}
                                             <li><a href="{% url 'accounts:my_profile' %}">Profile</a></li>

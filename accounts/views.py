@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from accounts.forms import SignUpForm, UpdateProfile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
+from listings.models import Listing
 from .mixins import AictiveUserRequiredMixin
 from django.views import View, generic
 
@@ -136,6 +137,23 @@ class ChangePassword(AictiveUserRequiredMixin, View):
             return redirect('accounts:my_profile')
         else:
             return render(request, 'accounts/my_profile.html', context)
+
+
+class MyListing(generic.ListView):
+    model = Listing
+    context_object_name = 'listing_list'
+    paginate_by = 10
+    template_name = 'accounts/liting_list.html'
+
+    def get_queryset(self):
+        listing_list = Listing.active_objects.filter(owner=self.request.user)
+
+        return listing_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f"{self.request.user.get_full_name()}'s Listings"
+        return context
 
 
 class LogoutView(AictiveUserRequiredMixin, View):

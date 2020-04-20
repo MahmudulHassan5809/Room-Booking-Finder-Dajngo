@@ -1,0 +1,75 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">My Listing</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-white mb-5">
+                                <div class="card-heading clearfix border-bottom mb-4">
+                                    <h4 class="card-title">Active Listings</h4>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        {% for listing in listing_list %}
+                                            <li class="position-relative booking">
+                                                <div class="media align-items-center">
+                                                    <div class="mr-4">
+                                                        {% with listing.listing_images.all|first as image %}
+                                                            <img class="rounded" src="{{image.image.url}}" alt="" />
+                                                        {% endwith %}
+
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="star">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        </div>
+                                                        <h5 class="mb-1 mt-2">
+                                                            <a href="#" class="text-extra-dark-gray">{{listing.title}}</a>
+                                                        </h5>
+                                                        <span class="d-block mb-4">{{listing.area}}--{{listing.city}}</span>
+                                                        <a href="#" class="text-primary"><i class="far fa-heart margin-5px-right"></i> 7 k</a>
+                                                    </div>
+                                                </div>
+                                                <div class="buttons-to-right">
+                                                    <a href="#" class="btn-gray"><i class="far fa-edit mr-2"></i>Edit</a>
+                                                    <a href="#" class="btn-gray mr-2"><i class="far fa-times-circle mr-2"></i> Reject</a>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+{% endblock content %}
+
+
