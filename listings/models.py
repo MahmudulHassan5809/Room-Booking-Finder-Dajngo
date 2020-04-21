@@ -90,8 +90,8 @@ class Listing(models.Model):
     active = models.BooleanField(default=True)
     booked = models.BooleanField(default=False)
 
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateField()
+    end_time = models.DateField(null=True, blank=True)
 
     tags = TaggableManager()
 

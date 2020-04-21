@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime, timedelta, date
+from django.utils import timezone
 from django.db.models import Q
 from .models import Listing, Category
 from django.contrib.auth.models import User
@@ -33,9 +34,7 @@ class CategoryListing(generic.ListView):
         today = datetime.now().date()
 
         listing_list = Listing.active_objects.filter(
-            Q(category=category_obj, booked=False, start_time__gte=today) |
-            Q(category=category_obj, booked=False, end_time__lte=today)
-        )
+            category=category_obj, booked=False).filter(Q(end_time__gte=today) | Q(end_time=None))
 
         return listing_list
 
@@ -59,9 +58,7 @@ class TagListing(generic.ListView):
         today = datetime.now().date()
 
         listing_list = Listing.active_objects.filter(
-            Q(tags=tag_obj, booked=False, start_time__gte=today) |
-            Q(tags=tag_obj, booked=False, end_time__lte=today)
-        )
+            tags=tag_obj, booked=False, end_time__gte=today)
         return listing_list
 
     def get_context_data(self, **kwargs):
@@ -81,12 +78,7 @@ class UserListing(generic.ListView):
         username = self.kwargs.get('username')
         user_obj = get_object_or_404(User, username=username)
 
-        today = datetime.now().date()
-
-        listing_list = Listing.active_objects.filter(
-            Q(owner=user_obj, booked=False, start_time__gte=today) |
-            Q(owner=user_obj, booked=False, end_time__lte=today)
-        )
+        listing_list = Listing.active_objects.filter(owner=user_obj)
         return listing_list
 
     def get_context_data(self, **kwargs):
@@ -124,3 +116,14 @@ class AddListing(AictiveUserRequiredMixin, View):
         }
 
         return render(request, 'listings/add_listing.html', context)
+
+    def post(self, request, *args, **kwargs):
+        add_listing_form = AddListingForm(request.POST, request.FILES)
+        context = {
+            'title': 'Add Listing',
+            'add_listing_form': add_listing_form
+        }
+        if add_listing_form.is_valid():
+            pass
+        else:
+            return render(request, 'listings/add_listing.html', context)
