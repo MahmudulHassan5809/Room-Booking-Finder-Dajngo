@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime, timedelta, date
 from django.utils import timezone
 from django.db.models import Q
-from .models import Listing, Category
+from django.contrib import messages
+from .models import Listing, Category, ListingImage
 from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
-from .forms import AddListingForm
+from .forms import AddListingForm, EditListingForm
+from django.urls import reverse_lazy
 from taggit.models import Tag
 from django.views import generic
 from django.views import View
@@ -119,11 +121,95 @@ class AddListing(AictiveUserRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         add_listing_form = AddListingForm(request.POST, request.FILES)
+
         context = {
             'title': 'Add Listing',
             'add_listing_form': add_listing_form
         }
         if add_listing_form.is_valid():
-            pass
+            facility_name = request.POST.getlist('facility_name')
+            facility_status_choice = request.POST.getlist(
+                'facility_status_choice')
+
+            add_listing = add_listing_form.save(commit=False)
+            add_listing.owner = request.user
+            add_listing.save()
+
+            add_listing_form.save_m2m()
+
+            for afile in request.FILES.getlist('images'):
+                add_listing.listing_images.create(image=afile)
+
+            for i in range(len(facility_name)):
+                add_listing.listing_extras.create(
+                    facility_name=facility_name[i], status=facility_status_choice[i])
+
+            messages.success(request, 'Listing Added Successfully....')
+            return redirect('listings:add_listing')
         else:
             return render(request, 'listings/add_listing.html', context)
+
+
+class EditListing(AictiveUserRequiredMixin, generic.edit.UpdateView):
+    model = Listing
+    # fields = ['title', 'price', 'description', 'rooms', 'wash_rooms',
+    #           'area', 'status', 'category', 'start_time', 'end_time', 'city', 'zip_code', 'tags']
+    form_class = EditListingForm
+    template_name = 'accounts/update_listing.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.object.title
+        context['images'] = self.object.listing_images
+        context['extras'] = self.object.listing_extras
+        context['slug'] = self.kwargs.get('slug')
+        return context
+
+
+class UpdateListingImage(AictiveUserRequiredMixin, View):
+    def post(self, request, *area, **kwargs):
+        listing_slug = self.kwargs.get('slug')
+        listing_obj = get_object_or_404(Listing, slug=listing_slug)
+
+        image_count = listing_obj.listing_images.all().count()
+        new_image_count = len(request.FILES.getlist('images'))
+
+        if new_image_count == 0:
+            messages.error(request, 'Please Select Some Image')
+            return redirect('listings:edit_listing', listing_slug)
+        elif image_count >= 4:
+            messages.error(request, 'Please Delete Images To New One')
+            return redirect('listings:edit_listing', listing_slug)
+        elif image_count == 3 and new_image_count > 1:
+            messages.error(request, 'You Can Add One More Image')
+            return redirect('listings:edit_listing', listing_slug)
+        elif image_count == 2 and new_image_count > 2:
+            messages.error(request, 'You Can Add Two More Image')
+            return redirect('listings:edit_listing', listing_slug)
+        elif image_count == 1 and new_image_count > 3:
+            messages.error(request, 'You Can Add Three More Image')
+            return redirect('listings:edit_listing', listing_slug)
+        elif image_count == 0 and new_image_count > 4:
+            messages.error(request, 'You Can Add Four More Image')
+            return redirect('listings:edit_listing', listing_slug)
+        else:
+            for afile in request.FILES.getlist('images'):
+                listing_obj.listing_images.create(image=afile)
+        messages.success(request, 'Image Added Successfully')
+        return redirect('listings:edit_listing', listing_slug)
+
+
+class DeleteListingImage(AictiveUserRequiredMixin, generic.edit.DeleteView):
+    model = ListingImage
+    template_name = 'listings/listingimage_confirm_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Image'
+        return context
+
+    def get_success_url(self):
+        if self.kwargs != None:
+            return reverse_lazy('listings:edit_listing', kwargs={'slug': self.kwargs['slug']})
+        else:
+            return reverse_lazy('listings:edit_listing', args=(self.object.listing.slug))

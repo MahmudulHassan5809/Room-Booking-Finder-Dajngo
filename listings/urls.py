@@ -20,5 +20,12 @@ urlpatterns = [
 
 
     path('listing/add-listing', views.AddListing.as_view(), name="add_listing"),
+    path('listing/edit-listing/<slug:slug>',
+         views.EditListing.as_view(), name="edit_listing"),
+
+    path('listing/update-listing-image/<slug:slug>',
+         views.UpdateListingImage.as_view(), name="update_listing_image"),
+    path('listing/delete-listing-image/<int:pk>/<str:slug>',
+         views.DeleteListingImage.as_view(), name="delete_listing_image"),
 
 ]

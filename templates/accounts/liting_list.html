@@ -58,8 +58,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="buttons-to-right">
-                                                    <a href="#" class="btn-gray"><i class="far fa-edit mr-2"></i>Edit</a>
-                                                    <a href="#" class="btn-gray mr-2"><i class="far fa-times-circle mr-2"></i> Reject</a>
+                                                    <a href="{% url 'listings:edit_listing' listing.slug %}" class="btn-gray"><i class="far fa-edit mr-2"></i>Edit</a>
+                                                    <a href="#" class="btn-gray mr-2"><i class="far fa-times-circle mr-2"></i>Make Inactive</a>
+                                                    <a href="#"class="btn-gray mr-2"
+                                                    >
+                                                    <i class="fas fa-trash mr-2"></i>Delete</a>
                                                 </div>
                                             </li>
                                         {% endfor %}

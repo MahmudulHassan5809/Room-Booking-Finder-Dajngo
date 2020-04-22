@@ -32,12 +32,13 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            {{add_listing_form.errors}}
+
             <form action="{% url 'listings:add_listing' %}" method="POST" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 <div class="row">
 
                     <div class="col-md-12">
+                        {% include 'partials/_alert.html' %}
                         <div class="card card-white">
                             <div class="card-heading clearfix border-bottom mb-4">
                                 <h4 class="card-title">Basic Information</h4>
@@ -108,9 +109,10 @@
                             </div>
                             <div class="card-body">
 
-                                    <div class="custom-file">
+                                    <div class="custom-file mb-3">
                                         {{add_listing_form.images|as_crispy_field}}
                                     </div>
+                                    <div class="gallery"></div>
 
                             </div>
                         </div>
@@ -185,4 +187,31 @@
 {% block script %}
     <script src="{% static 'front/js/dynamic_field.js' %}"></script>
     <script src="{% static 'front/js/tagsinput.js' %}"></script>
+
+
+    <script>
+        jQuery(document).ready(function($) {
+            var imagesPreview = function(input, placeToInsertImagePreview) {
+
+                if (input.files) {
+                    var filesAmount = input.files.length;
+
+                    for (i = 0; i < filesAmount; i++) {
+                        var reader = new FileReader();
+
+                        reader.onload = function(event) {
+                            $($.parseHTML('<img class="img-thumbnail img-fluid">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                        }
+
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                }
+
+            };
+
+            $('#gallery-photo-add').on('change', function() {
+                imagesPreview(this, 'div.gallery');
+            });
+        });
+    </script>
 {% endblock script %}
