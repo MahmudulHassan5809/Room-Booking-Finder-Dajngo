@@ -3,7 +3,8 @@ from datetime import datetime, timedelta, date
 from django.utils import timezone
 from django.db.models import Q
 from django.contrib import messages
-from .models import Listing, Category, ListingImage
+from django.contrib.messages.views import SuccessMessageMixin
+from .models import Listing, Category, ListingImage, ListingExtra
 from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
 from .forms import AddListingForm, EditListingForm
@@ -150,12 +151,11 @@ class AddListing(AictiveUserRequiredMixin, View):
             return render(request, 'listings/add_listing.html', context)
 
 
-class EditListing(AictiveUserRequiredMixin, generic.edit.UpdateView):
+class EditListing(AictiveUserRequiredMixin, SuccessMessageMixin, generic.edit.UpdateView):
     model = Listing
-    # fields = ['title', 'price', 'description', 'rooms', 'wash_rooms',
-    #           'area', 'status', 'category', 'start_time', 'end_time', 'city', 'zip_code', 'tags']
     form_class = EditListingForm
     template_name = 'accounts/update_listing.html'
+    success_message = 'Listing successfully updated!!!!'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -206,6 +206,38 @@ class DeleteListingImage(AictiveUserRequiredMixin, generic.edit.DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Delete Image'
+        return context
+
+    def get_success_url(self):
+        if self.kwargs != None:
+            return reverse_lazy('listings:edit_listing', kwargs={'slug': self.kwargs['slug']})
+        else:
+            return reverse_lazy('listings:edit_listing', args=(self.object.listing.slug))
+
+
+class UpdateListingExtra(AictiveUserRequiredMixin, View):
+    def post(self, request, *area, **kwargs):
+        listing_slug = self.kwargs.get('slug')
+        listing_obj = get_object_or_404(Listing, slug=listing_slug)
+
+        facility_name = request.POST.getlist('facility_name')
+        facility_status_choice = request.POST.getlist(
+            'facility_status_choice')
+
+        for i in range(len(facility_name)):
+            listing_obj.listing_extras.create(
+                facility_name=facility_name[i], status=facility_status_choice[i])
+        messages.success(request, 'Listing Extras Added Successfully')
+        return redirect('listings:edit_listing', listing_slug)
+
+
+class DeleteListingExtra(AictiveUserRequiredMixin, generic.edit.DeleteView):
+    model = ListingExtra
+    template_name = 'listings/listingextra_confirm_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Extra'
         return context
 
     def get_success_url(self):

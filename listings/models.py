@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.urls import reverse
 from taggit.managers import TaggableManager
 
 # Create your models here.
@@ -110,7 +111,7 @@ class Listing(models.Model):
         super(Listing, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('listings:update_listings', args=[str(self.slug)])
+        return reverse('listings:edit_listing', args=[str(self.slug)])
 
     def __str__(self):
         return self.title

@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Listing, Category
+from taggit.forms import TagWidget
 
 
 class DateInput(forms.DateInput):
@@ -58,6 +59,18 @@ class AddListingForm(ModelForm):
 
 
 class EditListingForm(ModelForm):
+    FACILITY_STATUS_CHOICES = (
+        ('0', 'No'),
+        ('1', 'Yes'),
+    )
+
+    images = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True, 'id': 'gallery-photo-add'}), label='Images For Listing  ')
+    facility_name = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'Facility Name'}))
+    facility_status_choice = forms.ChoiceField(
+        choices=FACILITY_STATUS_CHOICES, label="", initial='', widget=forms.Select(), required=True)
+
     class Meta:
         model = Listing
         exclude = ['owner', 'active', 'slug']
@@ -67,7 +80,7 @@ class EditListingForm(ModelForm):
             'area': forms.TextInput(attrs={'placeholder': 'Area/Location'}),
             'city': forms.TextInput(attrs={'placeholder': 'City'}),
             'zip_code': forms.TextInput(attrs={'placeholder': 'Zip Code'}),
-            #'tags': forms.TextInput(attrs={'data-role': 'tagsinput', 'class': 'w-100'}),
+            'tags': TagWidget(),
             'start_time': DateInput(),
             'end_time': DateInput()
         }
@@ -81,3 +94,4 @@ class EditListingForm(ModelForm):
     def __init__(self, *args, **kwargs):
         # call the parent init
         super(EditListingForm, self).__init__(*args, **kwargs)
+        self.fields['facility_name'].label = ''

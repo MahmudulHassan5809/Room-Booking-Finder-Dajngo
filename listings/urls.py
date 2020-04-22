@@ -28,4 +28,9 @@ urlpatterns = [
     path('listing/delete-listing-image/<int:pk>/<str:slug>',
          views.DeleteListingImage.as_view(), name="delete_listing_image"),
 
+    path('listing/update-listing-extra/<slug:slug>',
+         views.UpdateListingExtra.as_view(), name="update_listing_extra"),
+    path('listing/delete-listing-extra/<int:pk>/<str:slug>',
+         views.DeleteListingExtra.as_view(), name="delete_listing_extra"),
+
 ]
