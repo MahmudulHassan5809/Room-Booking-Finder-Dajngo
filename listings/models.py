@@ -3,6 +3,8 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+from django.db.models import CheckConstraint, Q, UniqueConstraint
+from django.core.validators import MinValueValidator, MaxValueValidator
 from taggit.managers import TaggableManager
 
 # Create your models here.
@@ -139,3 +141,36 @@ class ListingExtra(models.Model):
 
     def __str__(self):
         return self.listing.title
+
+
+class ListingRating(models.Model):
+    rating = models.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+    facility = models.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+    staff = models.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+    price = models.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name='listing_ratings')
+    average_rating = models.FloatField()
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_ratings')
+
+    class Meta:
+        constraints = [
+            CheckConstraint(check=Q(rating__range=(0, 10)),
+                            name='valid_rating'),
+            CheckConstraint(check=Q(facility__range=(0, 10)),
+                            name='valid_facility'),
+            CheckConstraint(check=Q(staff__range=(0, 10)), name='valid_staff'),
+            CheckConstraint(check=Q(price__range=(0, 10)), name='valid_price'),
+            UniqueConstraint(fields=['user', 'listing'], name='rating_once')
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} rates {self.listing.title}"
+
+    # def average_rating(self):
+    #     return (self.rating + self.facility + self.price + self.staff) / 4

@@ -33,4 +33,13 @@ urlpatterns = [
     path('listing/delete-listing-extra/<int:pk>/<str:slug>',
          views.DeleteListingExtra.as_view(), name="delete_listing_extra"),
 
+    path('listing/listing-active-status-toggle/<slug:slug>',
+         views.ListingStatusToggle.as_view(), name="listing_status_toggle"),
+    path('listing/delete/<int:pk>',
+         views.DeleteListing.as_view(), name="delete_listing"),
+
+
+    path('listing/rating/<int:id>',
+         views.ListingRatingView.as_view(), name="listing_rating"),
+
 ]

@@ -36,6 +36,7 @@
                 <div class="row">
 
                     <div class="col-md-12">
+                        {{form.errors}}
                         {% include 'partials/_alert.html' %}
                         <form action="{% url 'listings:edit_listing' slug %}" method="POST">
                             {% csrf_token %}

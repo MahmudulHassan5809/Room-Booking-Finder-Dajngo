@@ -4,11 +4,12 @@ from django.utils import timezone
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from .models import Listing, Category, ListingImage, ListingExtra
+from django.db.models import Avg, Max, Min, Sum, F, IntegerField
+from .models import Listing, Category, ListingImage, ListingExtra, ListingRating
 from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
-from .forms import AddListingForm, EditListingForm
-from django.urls import reverse_lazy
+from .forms import AddListingForm, EditListingForm, ListingRatingForm
+from django.urls import reverse_lazy, reverse
 from taggit.models import Tag
 from django.views import generic
 from django.views import View
@@ -107,6 +108,21 @@ class ListingDetails(generic.DetailView):
         context['title'] = self.object.title
         context['related_listings'] = list(
             Listing.active_objects.filter(category=self.object.category, active=True))[:3]
+        context['rating_form'] = ListingRatingForm()
+        context['average_listing_rating'] = self.object.listing_ratings.all(
+        ).aggregate(avg_rating=Avg(('average_rating'), output_field=IntegerField()))
+        context['avg_rating_value'] = self.object.listing_ratings.all(
+        ).aggregate(avg_rating_value=Avg(('rating'), output_field=IntegerField()))
+
+        context['avg_price_value'] = self.object.listing_ratings.all(
+        ).aggregate(avg_price_value=Avg(('price'), output_field=IntegerField()))
+
+        context['avg_staff_value'] = self.object.listing_ratings.all(
+        ).aggregate(avg_staff_value=Avg(('staff'), output_field=IntegerField()))
+
+        context['avg_facility_value'] = self.object.listing_ratings.all(
+        ).aggregate(avg_facility_value=Avg(('facility'), output_field=IntegerField()))
+
         return context
 
 
@@ -245,3 +261,60 @@ class DeleteListingExtra(AictiveUserRequiredMixin, generic.edit.DeleteView):
             return reverse_lazy('listings:edit_listing', kwargs={'slug': self.kwargs['slug']})
         else:
             return reverse_lazy('listings:edit_listing', args=(self.object.listing.slug))
+
+
+class ListingStatusToggle(AictiveUserRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listing_slug = self.kwargs.get('slug')
+        listing_obj = get_object_or_404(Listing, slug=listing_slug)
+
+        listing_obj.active ^= True
+        listing_obj.save()
+
+        messages.success(
+            request, 'Listing Active Status Changed Successfully...')
+        return redirect('accounts:my_listing')
+
+
+class DeleteListing(AictiveUserRequiredMixin, SuccessMessageMixin, generic.edit.DeleteView):
+    model = Listing
+    template_name = 'listings/listing_confirm_delete.html'
+    success_message = 'Lisitng Deleted Successgully'
+    success_url = reverse_lazy('accounts:my_listing')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(DeleteListing, self).delete(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Listing'
+        return context
+
+
+class ListingRatingView(AictiveUserRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        listing_id = self.kwargs.get('id')
+        listing_obj = get_object_or_404(Listing, id=listing_id)
+
+        check_rating = listing_obj.listing_ratings.filter(
+            user=request.user).first()
+        if check_rating:
+            messages.error(request, f'You Already Gave Your Rating For {listing_obj.title}')
+            return redirect('listings:listing_details', listing_obj.slug)
+
+        listing_rating_form = ListingRatingForm(request.POST)
+        if listing_rating_form.is_valid():
+            add_listing_rating = listing_rating_form.save(commit=False)
+            add_listing_rating.average_rating = (
+                listing_rating_form.cleaned_data.get('rating') +
+                listing_rating_form.cleaned_data.get('staff') +
+                listing_rating_form.cleaned_data.get('price') +
+                listing_rating_form.cleaned_data.get('facility')) / 4
+            add_listing_rating.listing = listing_obj
+            add_listing_rating.user = request.user
+            add_listing_rating.save()
+            messages.success(request, 'Thanks For Your Ratings...')
+            return redirect('listings:listing_details', listing_obj.slug)
+        else:
+            return redirect('listings:listing_details', listing_obj.slug)

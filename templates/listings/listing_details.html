@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load simple_tag %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.css">
+{% endblock style %}
 
 {% block title %}
     {{title}}
@@ -72,48 +78,68 @@
 
                             </ul>
                             <div class="row align-items-center">
+                                <div class="col-md-12 my-3">
+                                    {% include 'partials/_alert.html' %}
+                                    <h6 id="rating-heading" style="display:none">Rating Value : <strong id="rating-value"></strong></h6>
+                                    <form action="{% url 'listings:listing_rating' listing.id %}" method="POST" novalidate>
+
+                                        {% csrf_token %}
+                                        {{rating_form.rating|as_crispy_field}}
+                                        {{rating_form.facility|as_crispy_field}}
+                                        {{rating_form.staff|as_crispy_field}}
+                                        {{rating_form.price|as_crispy_field}}
+
+                                        <input type="submit" value="Submit" class="btn btn-outline-warning">
+                                    </form>
+                                </div>
                                 <div class="col-lg-3 col-md-4">
                                     <div class="bg-theme padding-30px-tb text-center border-radius-4">
-                                        <h5 class="font-size40 no-margin-bottom text-white">6.6</h5>
-                                        <h6 class="no-margin-bottom text-white font-size18">superb</h6>
+                                        <h5 class="font-size40 no-margin-bottom text-white">
+                                            {{average_listing_rating.avg_rating}}
+                                        </h5>
+                                        <h6 class="no-margin-bottom text-white font-size18">Overall Rating</h6>
                                     </div>
                                 </div>
                                 <div class="col-lg-9 col-md-8 mb-30">
                                     <div class="progress-text">
                                         <div class="row">
                                             <div class="col-6">Rating</div>
-                                            <div class="col-6 text-right">18%</div>
+                                            <div class="col-6 text-right">{{avg_rating_value.avg_rating_value|percentage}}</div>
                                         </div>
                                     </div>
                                     <div class="custom-progress progress1">
-                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:89%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:{{avg_rating_value.avg_rating_value|percentage}}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
                                     </div>
+
                                     <div class="progress-text">
                                         <div class="row">
-                                            <div class="col-6">Facilities</div>
-                                            <div class="col-6 text-right">89%</div>
+                                            <div class="col-6">Price</div>
+                                            <div class="col-6 text-right">{{avg_price_value.avg_price_value|percentage}}</div>
                                         </div>
                                     </div>
                                     <div class="custom-progress progress1">
-                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:30%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:{{avg_price_value.avg_price_value|percentage}}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
                                     </div>
+
+
                                     <div class="progress-text">
                                         <div class="row">
                                             <div class="col-6">Staff</div>
-                                            <div class="col-6 text-right">50%</div>
+                                            <div class="col-6 text-right">{{avg_staff_value.avg_staff_value|percentage}}</div>
                                         </div>
                                     </div>
                                     <div class="custom-progress progress1">
-                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:45%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:{{avg_staff_value.avg_staff_value|percentage}}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
                                     </div>
+
                                     <div class="progress-text">
                                         <div class="row">
-                                            <div class="col-6">price</div>
-                                            <div class="col-6 text-right">80%</div>
+                                            <div class="col-6">Facility</div>
+                                            <div class="col-6 text-right">{{avg_facility_value.avg_facility_value|percentage}}</div>
                                         </div>
                                     </div>
                                     <div class="custom-progress progress1">
-                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:80%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:{{avg_facility_value.avg_facility_value|percentage}}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
                                     </div>
                                 </div>
                             </div>
@@ -279,3 +305,18 @@
             </div>
     </section>
 {% endblock content %}
+
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.js"></script>
+    <script>
+    $('input[type="range"]').rangeslider({
+        polyfill: false,
+        // Callback function
+        onSlide: function(position, value) {
+            $('#rating-heading').show();
+            $('#rating-value').text(value)
+        },
+    });
+    </script>
+{% endblock script %}

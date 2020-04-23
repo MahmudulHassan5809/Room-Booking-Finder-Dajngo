@@ -146,7 +146,7 @@ class MyListing(generic.ListView):
     template_name = 'accounts/liting_list.html'
 
     def get_queryset(self):
-        listing_list = Listing.active_objects.filter(owner=self.request.user)
+        listing_list = Listing.objects.filter(owner=self.request.user)
 
         return listing_list
 

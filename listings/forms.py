@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Listing, Category
+from .models import Listing, Category, ListingRating
 from taggit.forms import TagWidget
 
 
@@ -17,7 +17,7 @@ class AddListingForm(ModelForm):
     images = forms.FileField(
         widget=forms.ClearableFileInput(attrs={'multiple': True, 'id': 'gallery-photo-add'}), label='Images For Listing  ')
     facility_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Facility Name'}))
+        widget=forms.TextInput(attrs={'placeholder': 'Facility Name'}), required=True)
     facility_status_choice = forms.ChoiceField(
         choices=FACILITY_STATUS_CHOICES, label="", initial='', widget=forms.Select(), required=True)
 
@@ -65,11 +65,11 @@ class EditListingForm(ModelForm):
     )
 
     images = forms.FileField(
-        widget=forms.ClearableFileInput(attrs={'multiple': True, 'id': 'gallery-photo-add'}), label='Images For Listing  ')
+        widget=forms.ClearableFileInput(attrs={'multiple': True, 'id': 'gallery-photo-add'}), label='Images For Listing  ', required=False)
     facility_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Facility Name'}))
+        widget=forms.TextInput(attrs={'placeholder': 'Facility Name'}), required=False)
     facility_status_choice = forms.ChoiceField(
-        choices=FACILITY_STATUS_CHOICES, label="", initial='', widget=forms.Select(), required=True)
+        choices=FACILITY_STATUS_CHOICES, label="", initial='', widget=forms.Select(), required=False)
 
     class Meta:
         model = Listing
@@ -95,3 +95,18 @@ class EditListingForm(ModelForm):
         # call the parent init
         super(EditListingForm, self).__init__(*args, **kwargs)
         self.fields['facility_name'].label = ''
+
+
+class ListingRatingForm(ModelForm):
+    rating = forms.FloatField(widget=forms.NumberInput(
+        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
+    facility = forms.FloatField(widget=forms.NumberInput(
+        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
+    staff = forms.FloatField(widget=forms.NumberInput(
+        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
+    price = forms.FloatField(widget=forms.NumberInput(
+        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
+
+    class Meta:
+        model = ListingRating
+        exclude = ['listing', 'user','average_rating']

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import escape, mark_safe
-from .models import Category, Listing, ListingImage, ListingExtra
+from .models import Category, Listing, ListingImage, ListingExtra, ListingRating
 
 
 # Register your models here.
@@ -33,7 +33,7 @@ class ListingAdmin(admin.ModelAdmin):
     list_display = ["title", "category",
                     "status", "price", "active", "booked", "tag_list", "end_time"]
     search_fields = ('title', 'slug', 'category__name',
-                     'status', 'active','tags__name')
+                     'status', 'active', 'tags__name')
     list_filter = ['category__name', 'status', 'active', 'booked']
     list_editable = ['active']
     exclude = ['slug']
@@ -53,3 +53,12 @@ class ListingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Listing, ListingAdmin)
+
+
+class ListingRatingAdmin(admin.ModelAdmin):
+    list_display = ["listing", "user","average_rating"]
+    search_fields = ['listing__title', 'user__username']
+    autocomplete_fields = ['listing','user']
+
+
+admin.site.register(ListingRating, ListingRatingAdmin)
