@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Listing, Category, ListingRating
+from .models import Listing, Category, ListingRating, ListingComment
 from taggit.forms import TagWidget
 
 
@@ -109,4 +109,27 @@ class ListingRatingForm(ModelForm):
 
     class Meta:
         model = ListingRating
-        exclude = ['listing', 'user','average_rating']
+        exclude = ['listing', 'user', 'average_rating']
+
+
+class ListingCommentForm(ModelForm):
+    name = forms.CharField()
+    email = forms.EmailField()
+    comment = forms.CharField(widget=forms.Textarea(
+        attrs={'rows': 4, 'cols': 40}))
+
+    class Meta:
+        model = ListingComment
+        exclude = ['listing', 'user']
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        user = self.request.user
+        super(ListingCommentForm, self).__init__(*args, **kwargs)
+
+        if user.is_authenticated:
+            self.fields['name'].initial = user.get_full_name()
+            self.fields['email'].initial = user.email
+
+            self.fields['email'].widget.attrs['readonly'] = True
+            self.fields['name'].widget.attrs['readonly'] = True

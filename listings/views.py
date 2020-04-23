@@ -5,10 +5,10 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Avg, Max, Min, Sum, F, IntegerField
-from .models import Listing, Category, ListingImage, ListingExtra, ListingRating
+from .models import Listing, Category, ListingImage, ListingExtra, ListingRating, ListingComment
 from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
-from .forms import AddListingForm, EditListingForm, ListingRatingForm
+from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCommentForm
 from django.urls import reverse_lazy, reverse
 from taggit.models import Tag
 from django.views import generic
@@ -109,6 +109,9 @@ class ListingDetails(generic.DetailView):
         context['related_listings'] = list(
             Listing.active_objects.filter(category=self.object.category, active=True))[:3]
         context['rating_form'] = ListingRatingForm()
+
+        context['comment_form'] = ListingCommentForm(request=self.request)
+
         context['average_listing_rating'] = self.object.listing_ratings.all(
         ).aggregate(avg_rating=Avg(('average_rating'), output_field=IntegerField()))
         context['avg_rating_value'] = self.object.listing_ratings.all(
@@ -317,4 +320,23 @@ class ListingRatingView(AictiveUserRequiredMixin, View):
             messages.success(request, 'Thanks For Your Ratings...')
             return redirect('listings:listing_details', listing_obj.slug)
         else:
+            return redirect('listings:listing_details', listing_obj.slug)
+
+
+class ListingCommentView(AictiveUserRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        listing_id = self.kwargs.get('id')
+        listing_obj = get_object_or_404(Listing, id=listing_id)
+
+        listing_comment_form = ListingCommentForm(
+            request.POST, request=request)
+        if listing_comment_form.is_valid():
+            add_listing_comment = listing_comment_form.save(commit=False)
+            add_listing_comment.listing = listing_obj
+            add_listing_comment.user = request.user
+            add_listing_comment.save()
+            messages.success(request, 'Thanks For Your Comments...')
+            return redirect('listings:listing_details', listing_obj.slug)
+        else:
+            print(listing_comment_form.errors)
             return redirect('listings:listing_details', listing_obj.slug)

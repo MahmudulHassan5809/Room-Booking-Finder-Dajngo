@@ -94,10 +94,14 @@
                                 </div>
                                 <div class="col-lg-3 col-md-4">
                                     <div class="bg-theme padding-30px-tb text-center border-radius-4">
+                                        <h6 class="no-margin-bottom text-white">
+                                            Total Rating {{listing.listing_ratings.all.count}}
+                                        </h6>
+                                        <h6 class="no-margin-bottom text-white font-size18">Overall Rating</h6>
                                         <h5 class="font-size40 no-margin-bottom text-white">
                                             {{average_listing_rating.avg_rating}}
                                         </h5>
-                                        <h6 class="no-margin-bottom text-white font-size18">Overall Rating</h6>
+
                                     </div>
                                 </div>
                                 <div class="col-lg-9 col-md-8 mb-30">
@@ -151,67 +155,43 @@
                         <div class="margin-60px-bottom sm-margin-40px-bottom blogs">
                             <div class="comments-area">
                                 <h5 class="font-size20 border-bottom padding-20px-bottom">Comments</h5>
-                                <div class="comment-box">
-                                    <div class="author-thumb">
-                                        <img src="img/blog/01.png" alt="" class="rounded-circle width-85 xs-width-100" />
-                                    </div>
-                                    <div class="comment-info">
-                                        <h6><a href="javascript:void(0);">Alex Joyrina</a></h6>
-                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                        <div class="reply">
-                                            <a href="javascript:void(0);">
-                                                <i class="fa fa-reply" aria-hidden="true"></i> Reply
-                                            </a>
+                                {% for comment in listing.listing_comments.all %}
+                                    <div class="comment-box">
+                                        <div class="author-thumb">
+                                            <img src="{{comment.user.user_profile.profile_pic.url}}" alt="" class="rounded-circle width-85 xs-width-100" />
+                                        </div>
+                                        <div class="comment-info">
+                                            <h6><a href="javascript:void(0);">{{comment.user.get_full_name}}</a></h6>
+                                            <p>{{comment.comment}}</p>
+                                            <div class="reply">
+                                                <a href="javascript:void(0);">
+                                                    <i class="fa fa-reply" aria-hidden="true"></i> Reply
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="comment-box">
-                                    <div class="author-thumb">
-                                        <img src="img/blog/02.png" alt="" class="rounded-circle width-85 xs-width-100" />
-                                    </div>
-                                    <div class="comment-info">
-                                        <h6><a href="javascript:void(0);">Jama Karleny</a></h6>
-                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                        <div class="reply">
-                                            <a href="javascript:void(0);">
-                                                <i class="fa fa-reply" aria-hidden="true"></i> Reply
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="comment-box no-border-bottom">
-                                    <div class="author-thumb">
-                                        <img src="img/blog/03.png" alt="" class="rounded-circle width-85 xs-width-100" />
-                                    </div>
-                                    <div class="comment-info">
-                                        <h6><a href="javascript:void(0);">Ivonne Drennen</a></h6>
-                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                        <div class="reply">
-                                            <a href="javascript:void(0);">
-                                                <i class="fa fa-reply" aria-hidden="true"></i> Reply
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}
+
                             </div>
                         </div>
                         <div class="comment-form">
                                 <div class="title-g margin-30px-bottom">
                                     <h3>Post a Comment</h3>
                                 </div>
-                                <form action="#!" id="comment-form" method="post">
+                                <form action="{% url 'listings:listing_comment' listing.id %}" id="comment-form" method="POST" novalidate>
+                                    {% csrf_token %}
                                     <div class="controls">
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <input id="form_name" type="text" name="name" placeholder="Name" required="required">
+                                                {{comment_form.name|as_crispy_field}}
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <input id="form_email" type="email" name="email" placeholder="Email" required="required">
+                                                {{comment_form.email|as_crispy_field}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 form-group">
-                                                <textarea id="form_message" name="message" placeholder="Message" rows="4" required="required"></textarea>
+                                               {{comment_form.comment|as_crispy_field}}
                                             </div>
                                             <div class="col-md-12">
                                                 <button type="submit" class="butn"><span>Send Message</span></button>

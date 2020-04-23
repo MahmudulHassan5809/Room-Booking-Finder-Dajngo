@@ -139,7 +139,7 @@ class ChangePassword(AictiveUserRequiredMixin, View):
             return render(request, 'accounts/my_profile.html', context)
 
 
-class MyListing(generic.ListView):
+class MyListing(AictiveUserRequiredMixin, generic.ListView):
     model = Listing
     context_object_name = 'listing_list'
     paginate_by = 10
@@ -154,6 +154,11 @@ class MyListing(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = f"{self.request.user.get_full_name()}'s Listings"
         return context
+
+
+class MyListingReview(AictiveUserRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        pass
 
 
 class LogoutView(AictiveUserRequiredMixin, View):

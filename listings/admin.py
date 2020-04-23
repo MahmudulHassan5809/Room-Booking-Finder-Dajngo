@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import escape, mark_safe
-from .models import Category, Listing, ListingImage, ListingExtra, ListingRating
+from .models import Category, Listing, ListingImage, ListingExtra, ListingRating, ListingComment
 
 
 # Register your models here.
@@ -56,9 +56,18 @@ admin.site.register(Listing, ListingAdmin)
 
 
 class ListingRatingAdmin(admin.ModelAdmin):
-    list_display = ["listing", "user","average_rating"]
+    list_display = ["listing", "user", "average_rating"]
     search_fields = ['listing__title', 'user__username']
-    autocomplete_fields = ['listing','user']
+    autocomplete_fields = ['listing', 'user']
 
 
 admin.site.register(ListingRating, ListingRatingAdmin)
+
+
+class ListingCommentAdmin(admin.ModelAdmin):
+    list_display = ["listing", "user"]
+    search_fields = ['listing__title', 'user__username']
+    autocomplete_fields = ['listing', 'user']
+
+
+admin.site.register(ListingComment, ListingCommentAdmin)

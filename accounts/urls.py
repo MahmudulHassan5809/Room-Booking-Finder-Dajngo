@@ -20,7 +20,10 @@ urlpatterns = [
 
     path('chanage-password/', views.ChangePassword.as_view(),
          name="change_password"),
+
+
     path('my-listing/', views.MyListing.as_view(), name="my_listing"),
+    path('my-listing/reviews', views.MyListingReview.as_view(), name="my_listing_reviews"),
 
 
     path('logout/', views.LogoutView.as_view(), name='logout'),

@@ -174,3 +174,14 @@ class ListingRating(models.Model):
 
     # def average_rating(self):
     #     return (self.rating + self.facility + self.price + self.staff) / 4
+
+
+class ListingComment(models.Model):
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name='listing_comments')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_comments')
+    comment = models.TextField()
+
+    def __str__(self):
+        return f"{self.user.username} comments on {self.listing.title}"
