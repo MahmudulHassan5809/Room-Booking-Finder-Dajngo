@@ -126,6 +126,8 @@ class ListingDetails(generic.DetailView):
         context['avg_facility_value'] = self.object.listing_ratings.all(
         ).aggregate(avg_facility_value=Avg(('facility'), output_field=IntegerField()))
 
+        context['reviews'] = ListingRating.objects.filter(listing=self.object)
+
         return context
 
 

@@ -1,0 +1,210 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card card-white mb-5">
+                                <div class="card-heading clearfix border-bottom mb-4">
+                                    <h4 class="card-title">Reviews</h4>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+
+                                        <li class="position-relative booking">
+                                            <div class="media">
+                                                <div class="msg-img">
+                                                    <img src="../img/testmonials/t-1.jpg" alt="" />
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="d-inline-block">Earl Land <span class="text-muted">on<a href="#" class="text-muted"> Burger House</a></span></h5>
+                                                    <div class="star float-right">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <span class="d-block mb-3 text-muted">Dec 20</span>
+                                                    <p class="mb-4">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
+                                                    <div class="mb-5">
+                                                        <img class="rounded" src="../img/content/06.jpg" alt="" />
+                                                    </div>
+                                                    <a href="#" class="btn-gray">Reply</a>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="position-relative booking">
+                                            <div class="media">
+                                                <div class="msg-img">
+                                                    <img src="../img/testmonials/t-2.jpg" alt="" />
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="d-inline-block">Jaime Cressey <span class="text-muted">on<a href="#" class="text-muted"> Sticky Band</a></span></h5>
+                                                    <div class="star float-right">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <span class="d-block mb-3 text-muted">Jan 02</span>
+                                                    <p class="mb-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                    <a href="#" class="btn-gray">Reply</a>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="position-relative booking">
+                                            <div class="media">
+                                                <div class="msg-img">
+                                                    <img src="../img/testmonials/t-3.jpg" alt="" />
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="d-inline-block">Tesha Stovall <span class="text-muted">on<a href="#" class="text-muted"> Shopping Mall</a></span></h5>
+                                                    <div class="star float-right">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <span class="d-block mb-3 text-muted">Jan 14</span>
+                                                    <p class="mb-5">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search.</p>
+                                                    <div class="row mb-5">
+                                                        <div class="col-md-3 col-lg-4 col-6">
+                                                            <img class="rounded" src="../img/content/4.jpg" alt="" />
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-4 col-6">
+                                                            <img class="rounded" src="../img/content/7.jpg" alt="" />
+                                                        </div>
+                                                    </div>
+                                                    <a href="#" class="btn-gray">Reply</a>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="position-relative">
+                                            <div class="media">
+                                                <div class="msg-img">
+                                                    <img src="../img/testmonials/t-4.jpg" alt="" />
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="d-inline-block">John Inoue <span class="text-muted">on<a href="#" class="text-muted"> Burger House</a></span></h5>
+                                                    <div class="star float-right">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <span class="d-block mb-3 text-muted">Feb 09</span>
+                                                    <p class="mb-5">It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum.</p>
+                                                    <a href="#" class="btn-gray">Reply</a>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card card-white mb-5">
+                                <div class="card-heading clearfix border-bottom mb-4">
+                                    <h4 class="card-title">Reviews</h4>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+
+                                        <li class="position-relative booking">
+                                            <div class="media">
+                                                <div class="msg-img">
+                                                    <img src="../img/testmonials/t-5.jpg" alt="" />
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="d-inline-block">Lori Scott <span class="text-muted">on<a href="#" class="text-muted"> Burger House</a></span></h5>
+                                                    <div class="star float-right">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <span class="d-block mb-3 text-muted">Jan 30</span>
+                                                    <p class="mb-5">If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
+                                                    <a href="#" class="btn-gray">Reply</a>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="position-relative">
+                                            <div class="media">
+                                                <div class="msg-img">
+                                                    <img src="../img/testmonials/t-6.jpg" alt="" />
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="d-inline-block">Justin Due <span class="text-muted">on<a href="#" class="text-muted"> Premium Fitness Gym</a></span></h5>
+                                                    <div class="star float-right">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <span class="d-block mb-3 text-muted">Feb 20</span>
+                                                    <p class="mb-5">Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                                    <a href="#" class="btn-gray">Reply</a>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+{% endblock content %}
+
+

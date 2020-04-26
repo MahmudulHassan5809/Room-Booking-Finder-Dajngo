@@ -152,11 +152,15 @@ class ListingRating(models.Model):
         validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
     price = models.FloatField(
         validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+    average_rating = models.FloatField()
+    review = models.TextField()
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name='listing_ratings')
-    average_rating = models.FloatField()
+
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_ratings')
+
+    created_at = models.DateField(auto_now_add=True)
 
     class Meta:
         constraints = [
@@ -172,8 +176,8 @@ class ListingRating(models.Model):
     def __str__(self):
         return f"{self.user.username} rates {self.listing.title}"
 
-    # def average_rating(self):
-    #     return (self.rating + self.facility + self.price + self.staff) / 4
+    def user_average_rating(self):
+        return (self.rating + self.facility + self.price + self.staff) / 4
 
 
 class ListingComment(models.Model):

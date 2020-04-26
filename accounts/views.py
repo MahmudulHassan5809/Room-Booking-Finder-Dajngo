@@ -156,9 +156,25 @@ class MyListing(AictiveUserRequiredMixin, generic.ListView):
         return context
 
 
-class MyListingReview(AictiveUserRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        pass
+class MyListingReview(AictiveUserRequiredMixin, generic.ListView):
+    model = Listing
+    context_object_name = 'listing_list'
+    paginate_by = 10
+    template_name = 'accounts/liting_review_list.html'
+
+    def get_queryset(self):
+        listing_list = Listing.objects.filter(
+            owner=self.request.user).values('title', 'slug')
+
+        return listing_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f"{self.request.user.username.title()}'s Listings Review"
+        return context
+
+
+
 
 
 class LogoutView(AictiveUserRequiredMixin, View):

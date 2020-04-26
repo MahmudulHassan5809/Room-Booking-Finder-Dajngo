@@ -107,6 +107,9 @@ class ListingRatingForm(ModelForm):
     price = forms.FloatField(widget=forms.NumberInput(
         attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
 
+    review = forms.CharField(widget=forms.Textarea(
+        attrs={'rows': 4, 'cols': 40}))
+
     class Meta:
         model = ListingRating
         exclude = ['listing', 'user', 'average_rating']
