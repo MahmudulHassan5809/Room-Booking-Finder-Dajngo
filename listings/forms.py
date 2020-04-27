@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Listing, Category, ListingRating, ListingComment
+from .models import Listing, Category, ListingRating, ListingComment, ListingBooking
 from taggit.forms import TagWidget
+from django.shortcuts import get_object_or_404
 
 
 class DateInput(forms.DateInput):
@@ -99,13 +100,13 @@ class EditListingForm(ModelForm):
 
 class ListingRatingForm(ModelForm):
     rating = forms.FloatField(widget=forms.NumberInput(
-        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
+        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=5.0)
     facility = forms.FloatField(widget=forms.NumberInput(
-        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
+        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=5.0)
     staff = forms.FloatField(widget=forms.NumberInput(
-        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
+        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=5.0)
     price = forms.FloatField(widget=forms.NumberInput(
-        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=10.0)
+        attrs={'type': 'range', 'step': '1'}), min_value=0.0, max_value=5.0)
 
     review = forms.CharField(widget=forms.Textarea(
         attrs={'rows': 4, 'cols': 40}))
@@ -136,3 +137,24 @@ class ListingCommentForm(ModelForm):
 
             self.fields['email'].widget.attrs['readonly'] = True
             self.fields['name'].widget.attrs['readonly'] = True
+
+
+class ListingBookingForm(ModelForm):
+    class Meta:
+        model = ListingBooking
+        exclude = ['listing', 'user']
+
+        widgets = {
+            'start_time': DateInput(),
+            'end_time': DateInput()
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.listing_id = kwargs.pop('listing_id')
+        super(ListingBookingForm, self).__init__(*args, **kwargs)
+
+    def clean_end_time(self):
+        listing_obj = get_object_or_404(Listing, id=self.listing_id)
+        end_date = self.cleaned_data['end_time']
+        if end_date > listing_obj.end_time:
+            raise forms.ValidationError('Please Check The End Time')

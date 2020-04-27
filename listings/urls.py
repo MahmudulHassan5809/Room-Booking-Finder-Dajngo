@@ -45,4 +45,8 @@ urlpatterns = [
     path('listing/comment/<int:id>',
          views.ListingCommentView.as_view(), name="listing_comment"),
 
+
+    path('listing/booking/<int:id>',
+         views.ListingBookingView.as_view(), name="listing_booking"),
+
 ]

@@ -5,7 +5,10 @@ register = template.Library()
 
 @register.filter
 def percentage(value):
-    return '{0:.2%}'.format(value / 100)
+    if value:
+        return '{0:.2%}'.format(value / 100)
+    else:
+        return 'Not Avialable'
 
 
 # @register.filter()

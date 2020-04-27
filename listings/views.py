@@ -8,7 +8,7 @@ from django.db.models import Avg, Max, Min, Sum, F, IntegerField
 from .models import Listing, Category, ListingImage, ListingExtra, ListingRating, ListingComment
 from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
-from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCommentForm
+from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCommentForm, ListingBookingForm
 from django.urls import reverse_lazy, reverse
 from taggit.models import Tag
 from django.views import generic
@@ -111,6 +111,8 @@ class ListingDetails(generic.DetailView):
         context['rating_form'] = ListingRatingForm()
 
         context['comment_form'] = ListingCommentForm(request=self.request)
+
+        context['booking_form'] = ListingBookingForm(listing_id=self.object.id)
 
         context['average_listing_rating'] = self.object.listing_ratings.all(
         ).aggregate(avg_rating=Avg(('average_rating'), output_field=IntegerField()))
@@ -341,4 +343,24 @@ class ListingCommentView(AictiveUserRequiredMixin, View):
             return redirect('listings:listing_details', listing_obj.slug)
         else:
             print(listing_comment_form.errors)
+            return redirect('listings:listing_details', listing_obj.slug)
+
+
+class ListingBookingView(AictiveUserRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        listing_id = self.kwargs.get('id')
+        listing_obj = get_object_or_404(Listing, id=listing_id)
+
+        listing_booking_form = ListingBookingForm(
+            request.POST, listing_id=listing_id)
+        if listing_booking_form.is_valid():
+            pass
+            # add_listing_comment = listing_comment_form.save(commit=False)
+            # add_listing_comment.listing = listing_obj
+            # add_listing_comment.user = request.user
+            # add_listing_comment.save()
+            # messages.success(request, 'Thanks For Your Comments...')
+            # return redirect('listings:listing_details', listing_obj.slug)
+        else:
+            print(listing_booking_form.errors)
             return redirect('listings:listing_details', listing_obj.slug)

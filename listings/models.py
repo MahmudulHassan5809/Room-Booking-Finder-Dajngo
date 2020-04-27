@@ -149,9 +149,9 @@ class ListingRating(models.Model):
     facility = models.FloatField(
         validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
     staff = models.FloatField(
-        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     price = models.FloatField(
-        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     average_rating = models.FloatField()
     review = models.TextField()
     listing = models.ForeignKey(
@@ -164,9 +164,9 @@ class ListingRating(models.Model):
 
     class Meta:
         constraints = [
-            CheckConstraint(check=Q(rating__range=(0, 10)),
+            CheckConstraint(check=Q(rating__range=(0, 5)),
                             name='valid_rating'),
-            CheckConstraint(check=Q(facility__range=(0, 10)),
+            CheckConstraint(check=Q(facility__range=(0, 5)),
                             name='valid_facility'),
             CheckConstraint(check=Q(staff__range=(0, 10)), name='valid_staff'),
             CheckConstraint(check=Q(price__range=(0, 10)), name='valid_price'),
@@ -189,3 +189,16 @@ class ListingComment(models.Model):
 
     def __str__(self):
         return f"{self.user.username} comments on {self.listing.title}"
+
+
+class ListingBooking(models.Model):
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name='listing_bookings')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_bookings')
+
+    start_time = models.DateField()
+    end_time = models.DateField()
+
+    def __str__(self):
+        return f"{self.user.username} books {self.listing.title}"
