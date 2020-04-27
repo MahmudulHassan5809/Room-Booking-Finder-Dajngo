@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from accounts.forms import SignUpForm, UpdateProfile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
-from listings.models import Listing
+from listings.models import Listing, ListingRating
 from .mixins import AictiveUserRequiredMixin
 from django.views import View, generic
 
@@ -157,24 +157,20 @@ class MyListing(AictiveUserRequiredMixin, generic.ListView):
 
 
 class MyListingReview(AictiveUserRequiredMixin, generic.ListView):
-    model = Listing
-    context_object_name = 'listing_list'
+    model = ListingRating
+    context_object_name = 'listing_review_list'
     paginate_by = 10
     template_name = 'accounts/liting_review_list.html'
 
     def get_queryset(self):
-        listing_list = Listing.objects.filter(
-            owner=self.request.user).values('title', 'slug')
-
-        return listing_list
+        listing_review_list = ListingRating.objects.filter(
+            listing__owner=self.request.user)
+        return listing_review_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = f"{self.request.user.username.title()}'s Listings Review"
         return context
-
-
-
 
 
 class LogoutView(AictiveUserRequiredMixin, View):
