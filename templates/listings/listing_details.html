@@ -24,7 +24,12 @@
     <section>
             <div class="container">
                 <div class="row">
+
                     <div class="col-lg-8 margin-50px-bottom">
+                        {% include 'partials/_alert.html' %}
+
+
+
                         <div class="listing-detail margin-50px-bottom sm-margin-35px-bottom">
                             <h3 class="font-weight-500">{{listing.title}}</h3>
                             <div>
@@ -82,7 +87,7 @@
                             </ul>
                             <div class="row align-items-center">
                                 <div class="col-md-12 my-3">
-                                    {% include 'partials/_alert.html' %}
+
                                     <h6 id="rating-heading" style="display:none">Rating Value : <strong id="rating-value"></strong></h6>
                                     <form action="{% url 'listings:listing_rating' listing.id %}" method="POST" novalidate>
 
@@ -329,4 +334,5 @@
     });
     </script>
     <script src="{% static 'front/js/rating.js' %}"></script>
+
 {% endblock script %}

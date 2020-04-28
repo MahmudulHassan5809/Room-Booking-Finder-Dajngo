@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
 from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCommentForm, ListingBookingForm
 from django.urls import reverse_lazy, reverse
+import re
 from taggit.models import Tag
 from django.views import generic
 from django.views import View
@@ -105,6 +106,7 @@ class ListingDetails(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['title'] = self.object.title
         context['related_listings'] = list(
             Listing.active_objects.filter(category=self.object.category, active=True))[:3]
@@ -362,5 +364,5 @@ class ListingBookingView(AictiveUserRequiredMixin, View):
             # messages.success(request, 'Thanks For Your Comments...')
             # return redirect('listings:listing_details', listing_obj.slug)
         else:
-            print(listing_booking_form.errors)
+            messages.info(request, listing_booking_form.errors)
             return redirect('listings:listing_details', listing_obj.slug)

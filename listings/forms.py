@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import Listing, Category, ListingRating, ListingComment, ListingBooking
 from taggit.forms import TagWidget
+from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
 
@@ -149,12 +150,25 @@ class ListingBookingForm(ModelForm):
             'end_time': DateInput()
         }
 
-    def __init__(self, *args, **kwargs):
-        self.listing_id = kwargs.pop('listing_id')
-        super(ListingBookingForm, self).__init__(*args, **kwargs)
-
     def clean_end_time(self):
         listing_obj = get_object_or_404(Listing, id=self.listing_id)
         end_date = self.cleaned_data['end_time']
         if end_date > listing_obj.end_time:
             raise forms.ValidationError('Please Check The End Time')
+        else:
+            return self.cleaned_data['end_time']
+
+    def clean_start_time(self):
+        listing_obj = get_object_or_404(Listing, id=self.listing_id)
+        start_date = self.cleaned_data['start_time']
+        if start_date < listing_obj.start_time:
+            raise forms.ValidationError('Please Check The Start Time')
+        else:
+            return self.cleaned_data['start_time']
+
+    def __init__(self, *args, **kwargs):
+        self.listing_id = kwargs.pop('listing_id')
+        super(ListingBookingForm, self).__init__(*args, **kwargs)
+
+        self.fields['start_time'].label = 'Start Date'
+        self.fields['end_time'].label = 'End Date'
