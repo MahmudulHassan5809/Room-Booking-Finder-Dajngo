@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.db.models import CheckConstraint, Q, UniqueConstraint
 from django.core.validators import MinValueValidator, MaxValueValidator
 from taggit.managers import TaggableManager
+from listings.tasks import set_booked_as_inactive
 
 # Create your models here.
 
@@ -199,6 +200,21 @@ class ListingBooking(models.Model):
 
     start_time = models.DateField()
     end_time = models.DateField()
+
+    def save(self, *args, **kwargs):
+        create_task = False  # variable to know if celery task is to be created
+        if self.pk is None:  # Check if instance has 'pk' attribute set
+            # Celery Task is to created in case of 'INSERT'
+            create_task = True  # set the variable
+
+        # Call the Django's "real" save() method.
+        super(ListingBooking, self).save(*args, **kwargs)
+
+        if create_task:  # check if task is to be created
+            # pass the current instance as 'args' and call the task with 'eta' argument
+            # to execute after the race `end_time`
+            # task will be executed after 'race_end_time'
+            set_booked_as_inactive.apply_async(args=[self], eta=self.end_time)
 
     def __str__(self):
         return f"{self.user.username} books {self.listing.title}"
