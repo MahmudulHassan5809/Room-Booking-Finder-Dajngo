@@ -3,6 +3,8 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from django.db.models import CheckConstraint, Q, UniqueConstraint
 from django.core.validators import MinValueValidator, MaxValueValidator
 from taggit.managers import TaggableManager
@@ -39,7 +41,7 @@ def generate_unique_slug(klass, field):
     while klass.objects.filter(slug=unique_slug).exists():
         unique_slug = '%s-%d' % (origin_slug, numb)
         numb += 1
-    print(unique_slug)
+
     return unique_slug
 
 
@@ -193,28 +195,52 @@ class ListingComment(models.Model):
 
 
 class ListingBooking(models.Model):
+    STATUS_CHOICES = (
+        ('1', 'Pending'),
+        ('2', 'Accepted'),
+        ('3', 'Rejected'),
+        ('4', 'Completed'),
+    )
+
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name='listing_bookings')
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_bookings')
 
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default='1', null=True, blank=True)
+
     start_time = models.DateField()
     end_time = models.DateField()
 
     def save(self, *args, **kwargs):
-        create_task = False  # variable to know if celery task is to be created
-        if self.pk is None:  # Check if instance has 'pk' attribute set
-            # Celery Task is to created in case of 'INSERT'
-            create_task = True  # set the variable
+        create_task = False
+        if self.pk is None:
+            create_task = True
 
-        # Call the Django's "real" save() method.
         super(ListingBooking, self).save(*args, **kwargs)
 
-        if create_task:  # check if task is to be created
-            # pass the current instance as 'args' and call the task with 'eta' argument
-            # to execute after the race `end_time`
-            # task will be executed after 'race_end_time'
-            set_booked_as_inactive.apply_async(args=[self], eta=self.end_time)
+        if create_task and self.end_time:
+            print('okskksksk')
+            set_booked_as_inactive.apply_async(
+                args=[self.listing.id, self.id], eta=self.end_time)
 
     def __str__(self):
         return f"{self.user.username} books {self.listing.title}"
+
+
+@receiver(post_save, sender=ListingBooking)
+def make_listing_booked(sender, instance, created, **kwargs):
+    try:
+        if not created:
+            if instance.listing.booked == False and instance.status == '2':
+                instance.listing.booked = True
+                instance.listing.save()
+            if instance.listing.booked == True and instance.status == '3':
+                instance.listing.booked = False
+                instance.listing.save()
+            if instance.status == '1' or instance.status == '4':
+                instance.listing.booked = False
+                instance.listing.save()
+    except Exception as e:
+        pass

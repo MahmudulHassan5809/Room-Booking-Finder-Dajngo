@@ -23,7 +23,14 @@ urlpatterns = [
 
 
     path('my-listing/', views.MyListing.as_view(), name="my_listing"),
-    path('my-listing/reviews', views.MyListingReview.as_view(), name="my_listing_reviews"),
+    path('my-listing/reviews', views.MyListingReview.as_view(),
+         name="my_listing_reviews"),
+
+    path('listing/my-booking/',
+         views.MyBookingView.as_view(), name="my_booking"),
+
+    path('listing/change/booking-status/<int:id>',
+         views.ChangeBookingStatusView.as_view(), name="change_booking_status"),
 
 
     path('logout/', views.LogoutView.as_view(), name='logout'),

@@ -38,6 +38,13 @@
 
                     {% endfor %}
 
+
+                    {% if is_paginated %}
+                        <div class="col-md-12">
+                            {% include 'partials/front/_pagination.html' %}
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
         </section>

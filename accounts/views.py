@@ -9,7 +9,9 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from accounts.forms import SignUpForm, UpdateProfile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
-from listings.models import Listing, ListingRating
+from listings.models import Listing, ListingRating, ListingBooking
+from listings.forms import ChangeBookingStatus
+from django.db.models import Q
 from .mixins import AictiveUserRequiredMixin
 from django.views import View, generic
 
@@ -160,7 +162,7 @@ class MyListingReview(AictiveUserRequiredMixin, generic.ListView):
     model = ListingRating
     context_object_name = 'listing_review_list'
     paginate_by = 10
-    template_name = 'accounts/liting_review_list.html'
+    template_name = 'accounts/listing_review_list.html'
 
     def get_queryset(self):
         listing_review_list = ListingRating.objects.filter(
@@ -171,6 +173,51 @@ class MyListingReview(AictiveUserRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = f"{self.request.user.username.title()}'s Listings Review"
         return context
+
+
+class MyBookingView(AictiveUserRequiredMixin, generic.ListView):
+    model = ListingBooking
+    context_object_name = 'booking_list'
+    paginate_by = 10
+    template_name = 'accounts/booking_list.html'
+
+    def get_queryset(self):
+        booking_list = ListingBooking.objects.filter(
+            Q(user=self.request.user) | Q(listing__owner=self.request.user))
+
+        return booking_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Booking List'
+        context['change_booking_status'] = ChangeBookingStatus()
+        return context
+
+
+class ChangeBookingStatusView(AictiveUserRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        booking_id = kwargs.get('id')
+        booking_object = get_object_or_404(ListingBooking, id=booking_id)
+
+        booking_status = request.POST.get('status')
+
+        if booking_status == '':
+            messages.error(request, ('Please select A Value...'))
+            return redirect('accounts:my_booking')
+        else:
+            booking_object.status = booking_status
+            booking_object.save()
+            messages.success(request, ('You have Changed Booking Status...'))
+            return redirect('accounts:my_booking')
+
+    def dispatch(self, request, *args, **kwargs):
+        booking_id = kwargs.get('id')
+        booking_object = get_object_or_404(ListingBooking, id=booking_id)
+
+        if booking_object.listing.owner != self.request.user:
+            messages.error(request, ('You are not allowed to edit this Post'))
+            return redirect('accounts:my_booking')
+        return super(ChangeBookingStatusView, self).dispatch(request, *args, **kwargs)
 
 
 class LogoutView(AictiveUserRequiredMixin, View):

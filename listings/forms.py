@@ -172,3 +172,14 @@ class ListingBookingForm(ModelForm):
 
         self.fields['start_time'].label = 'Start Date'
         self.fields['end_time'].label = 'End Date'
+
+
+class ChangeBookingStatus(ModelForm):
+    class Meta:
+        model = ListingBooking
+        exclude = ['listing', 'user', 'start_time', 'end_time']
+
+    def __init__(self, *args, **kwargs):
+        super(ChangeBookingStatus, self).__init__(*args, **kwargs)
+
+        self.fields['status'].label = ''

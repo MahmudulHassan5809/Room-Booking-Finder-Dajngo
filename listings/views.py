@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Avg, Max, Min, Sum, F, IntegerField
-from .models import Listing, Category, ListingImage, ListingExtra, ListingRating, ListingComment
+from .models import Listing, Category, ListingImage, ListingExtra, ListingRating, ListingComment, ListingBooking
 from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
 from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCommentForm, ListingBookingForm
@@ -356,13 +356,12 @@ class ListingBookingView(AictiveUserRequiredMixin, View):
         listing_booking_form = ListingBookingForm(
             request.POST, listing_id=listing_id)
         if listing_booking_form.is_valid():
-            pass
-            # add_listing_comment = listing_comment_form.save(commit=False)
-            # add_listing_comment.listing = listing_obj
-            # add_listing_comment.user = request.user
-            # add_listing_comment.save()
-            # messages.success(request, 'Thanks For Your Comments...')
-            # return redirect('listings:listing_details', listing_obj.slug)
+            add_listing_booking = listing_booking_form.save(commit=False)
+            add_listing_booking.listing = listing_obj
+            add_listing_booking.user = request.user
+            add_listing_booking.save()
+            messages.success(request, 'Your Reuqested Has Been Submited...')
+            return redirect('listings:listing_details', listing_obj.slug)
         else:
             messages.info(request, listing_booking_form.errors)
             return redirect('listings:listing_details', listing_obj.slug)

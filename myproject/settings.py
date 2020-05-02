@@ -140,6 +140,7 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
+CELERY_BROKER_URL = 'amqp://localhost'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

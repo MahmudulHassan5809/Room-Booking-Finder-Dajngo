@@ -26,69 +26,73 @@
 
 {% block content %}
     <div class="row">
-                        <div class="col-md-12">
-                            {% include 'partials/_alert.html' %}
-                            <div class="card card-white mb-5">
-                                <div class="card-heading clearfix border-bottom mb-4">
-                                    <h4 class="card-title">Active Listings</h4>
+        <div class="col-md-12">
+            {% include 'partials/_alert.html' %}
+            <div class="card card-white mb-5">
+                <div class="card-heading clearfix border-bottom mb-4">
+                    <h4 class="card-title">Active Listings</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {% for listing in listing_list %}
+                            <li class="position-relative booking">
+                                <div class="media align-items-center">
+                                    <div class="mr-4">
+                                        {% with listing.listing_images.all|first as image %}
+                                            <img class="rounded" src="{{image.image.url}}" alt=""  width="200" />
+                                        {% endwith %}
+
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="star">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <h5 class="mb-1 mt-2">
+                                            <a href="#" class="text-extra-dark-gray">{{listing.title}}</a>
+                                        </h5>
+                                        <span class="d-block mb-4">{{listing.area}}--{{listing.city}}</span>
+                                        <a href="#" class="text-primary"><i class="far fa-heart margin-5px-right"></i> 7 k</a>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <ul class="list-unstyled">
-                                        {% for listing in listing_list %}
-                                            <li class="position-relative booking">
-                                                <div class="media align-items-center">
-                                                    <div class="mr-4">
-                                                        {% with listing.listing_images.all|first as image %}
-                                                            <img class="rounded" src="{{image.image.url}}" alt="" />
-                                                        {% endwith %}
+                                <div class="buttons-to-right">
+                                    <a href="{% url 'listings:edit_listing' listing.slug %}" class="btn-gray"><i class="far fa-edit mr-2"></i>Edit</a>
 
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div class="star">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                        </div>
-                                                        <h5 class="mb-1 mt-2">
-                                                            <a href="#" class="text-extra-dark-gray">{{listing.title}}</a>
-                                                        </h5>
-                                                        <span class="d-block mb-4">{{listing.area}}--{{listing.city}}</span>
-                                                        <a href="#" class="text-primary"><i class="far fa-heart margin-5px-right"></i> 7 k</a>
-                                                    </div>
-                                                </div>
-                                                <div class="buttons-to-right">
-                                                    <a href="{% url 'listings:edit_listing' listing.slug %}" class="btn-gray"><i class="far fa-edit mr-2"></i>Edit</a>
+                                    {% if listing.active %}
+                                        <a
+                                        data-title="Inactive {{listing.title}}?"
+                                        href="{% url 'listings:listing_status_toggle' listing.slug %}" class="btn-gray mr-2 listing-inactive">
+                                            <i class="far fa-times-circle mr-2"></i>
+                                            Make Inactive
+                                        </a>
+                                    {% else %}
+                                        <a
+                                        data-title="Active {{listing.title}}?"
+                                        href="{% url 'listings:listing_status_toggle' listing.slug %}" class="btn-gray mr-2 listing-active"><i class="far fa-check-circle mr-2"></i>Make Active</a>
+                                    {% endif %}
 
-                                                    {% if listing.active %}
-                                                        <a
-                                                        data-title="Inactive {{listing.title}}?"
-                                                        href="{% url 'listings:listing_status_toggle' listing.slug %}" class="btn-gray mr-2 listing-inactive">
-                                                            <i class="far fa-times-circle mr-2"></i>
-                                                            Make Inactive
-                                                        </a>
-                                                    {% else %}
-                                                        <a
-                                                        data-title="Active {{listing.title}}?"
-                                                        href="{% url 'listings:listing_status_toggle' listing.slug %}" class="btn-gray mr-2 listing-active"><i class="far fa-check-circle mr-2"></i>Make Active</a>
-                                                    {% endif %}
-
-                                                    <a
-                                                    data-title="Delete {{listing.title}}?"
-                                                    href="{% url 'listings:delete_listing' listing.id %}"class="btn-gray mr-2 listing-delete"
-                                                    >
-                                                    <i class="fas fa-trash mr-2"></i>Delete</a>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-
+                                    <a
+                                    data-title="Delete {{listing.title}}?"
+                                    href="{% url 'listings:delete_listing' listing.id %}"class="btn-gray mr-2 listing-delete"
+                                    >
+                                    <i class="fas fa-trash mr-2"></i>Delete</a>
                                 </div>
-                            </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
 
-                        </div>
-                    </div>
+                </div>
+            </div>
+        </div>
+        {% if is_paginated %}
+            <div class="col-md-12">
+                {% include 'partials/admin/_pagination.html' %}
+            </div>
+        {% endif %}
+    </div>
 {% endblock content %}
 
 

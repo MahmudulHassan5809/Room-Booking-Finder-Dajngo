@@ -1,19 +1,16 @@
-from __future__ import absolute_import
-import os
-from celery import Celery
-from django.conf import settings
-
-# set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'listings.settings')
-app = Celery('listings')
-
-# Using a string here means the worker will not have to
-# pickle the object when using Windows.
-app.config_from_object('django.conf:settings')
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+from celery.decorators import task
+from django.shortcuts import get_object_or_404
 
 
-@app.task(bind=True)
-def set_booked_as_inactive(race_object):
-    race_object.listing.booked = False
-    race_object.listing.save()
+@task()
+def set_booked_as_inactive(listing_id, booking_id):
+    from .models import Listing, ListingBooking
+    listing_object = get_object_or_404(Listing, id=listing_id)
+    booking_object = get_object_or_404(ListingBooking, id=booking_id)
+
+    listing_object.booked = False
+    if booking_object.status == '2':
+        booking_object.status = '4'
+
+    listing_object.save()
+    booking_object.save()

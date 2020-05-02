@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import escape, mark_safe
-from .models import Category, Listing, ListingImage, ListingExtra, ListingRating, ListingComment
+from .models import Category, Listing, ListingImage, ListingExtra, ListingRating, ListingComment, ListingBooking
 
 
 # Register your models here.
@@ -35,7 +35,7 @@ class ListingAdmin(admin.ModelAdmin):
     search_fields = ('title', 'slug', 'category__name',
                      'status', 'active', 'tags__name')
     list_filter = ['category__name', 'status', 'active', 'booked']
-    list_editable = ['active']
+    list_editable = ['active', 'booked']
     exclude = ['slug']
     list_per_page = 20
 
@@ -71,3 +71,15 @@ class ListingCommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ListingComment, ListingCommentAdmin)
+
+
+class ListingBookingAdmin(admin.ModelAdmin):
+    list_display = ["listing", "user", "start_time", "end_time", "status"]
+    search_fields = ('listing__title', 'user__username',
+                     'listing__category__name')
+    list_filter = ['listing__category__name']
+    list_editable = ['status']
+    list_per_page = 20
+
+
+admin.site.register(ListingBooking, ListingBookingAdmin)
