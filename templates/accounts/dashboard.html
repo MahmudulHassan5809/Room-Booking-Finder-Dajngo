@@ -1,5 +1,7 @@
 {% extends "dash_base.html" %}
 
+
+{% load static %}
 {% load crispy_forms_tags %}
 
 
@@ -20,140 +22,187 @@
 
 {% block content %}
     <div class="row">
-                        <div class="col-xl-3 col-lg-6 col-md-6">
-                            <div class="card card-white stats-widget">
-                                <div class="card-body">
-                                    <div class="float-left">
-                                        <span class="stats-number countup">813</span>
-                                        <p class="stats-info">Total Profit</p>
-                                    </div>
-                                    <div class="float-right">
-                                        <i class="fas fa-dollar-sign text-primary stats-icon"></i>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="progress mb-0 mt-3">
-                                        <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                            <span class="sr-only">60% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6 col-md-6">
-                            <div class="card card-white stats-widget">
-                                <div class="card-body">
-                                    <div class="float-left">
-                                        <span class="stats-number countup">505</span>
-                                        <p class="stats-info">Feedbacks</p>
-                                    </div>
-                                    <div class="float-right">
-                                        <i class="fas fa-download stats-icon text-danger"></i>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="progress mb-0 mt-3">
-                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6 col-md-6">
-                            <div class="card card-white stats-widget">
-                                <div class="card-body">
-                                    <div class="float-left">
-                                        <span class="stats-number countup">967</span>
-                                        <p class="stats-info">New Orders</p>
-                                    </div>
-                                    <div class="float-right">
-                                        <i class="fas fa-user-plus stats-icon text-warning"></i>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="progress mb-0 mt-3">
-                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-                                            <span class="sr-only">40% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6 col-md-6">
-                            <div class="card card-white stats-widget">
-                                <div class="card-body">
-                                    <div class="float-left">
-                                        <span class="stats-number countup">991</span>
-                                        <p class="stats-info">New Users</p>
-                                    </div>
-                                    <div class="float-right">
-                                        <i class="fas fa-tasks stats-icon text-success"></i>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="progress mb-0 mt-3">
-                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100" style="width: 58%;">
-                                            <span class="sr-only">58% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card card-white stats-widget">
+                <div class="card-body">
+                    <div class="float-left">
+                        <span class="stats-number countup">813</span>
+                        <p class="stats-info">Total Profit</p>
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-dollar-sign text-primary stats-icon"></i>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="progress mb-0 mt-3">
+                        <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                            <span class="sr-only">60% Complete</span>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <div class="card card-white">
-                                <div class="card-heading clearfix">
-                                    <h4 class="card-title">Invoices</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive invoice-table">
-                                        <table class="table">
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">1236</th>
-                                                    <td>Jamara Karle</td>
-                                                    <td>Twitter</td>
-                                                    <td><span class="label label-success">Finished</span></td>
-                                                    <td>$6543</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">6874</th>
-                                                    <td>Keir Prestonly</td>
-                                                    <td>Instagram</td>
-                                                    <td><span class="label label-success">Finished</span></td>
-                                                    <td>$7114</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3421</th>
-                                                    <td>Finley Walkeror</td>
-                                                    <td>Facebook</td>
-                                                    <td><span class="label label-danger">Denied</span></td>
-                                                    <td>$2685</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">9500</th>
-                                                    <td>Stepha Kruse</td>
-                                                    <td>Youtube</td>
-                                                    <td><span class="label label-warning">Pending</span></td>
-                                                    <td>$5900</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">7854</th>
-                                                    <td>Alivin Corondo</td>
-                                                    <td>Facebook</td>
-                                                    <td><span class="label label-default">Upcoming</span></td>
-                                                    <td>$6712</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">9870</th>
-                                                    <td>Dunican keithly</td>
-                                                    <td>Instagram</td>
-                                                    <td><span class="label label-default">Upcoming</span></td>
-                                                    <td>$1099</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card card-white stats-widget">
+                <div class="card-body">
+                    <div class="float-left">
+                        <span class="stats-number countup">505</span>
+                        <p class="stats-info">Feedbacks</p>
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-download stats-icon text-danger"></i>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="progress mb-0 mt-3">
+                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+                            <span class="sr-only">20% Complete</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card card-white stats-widget">
+                <div class="card-body">
+                    <div class="float-left">
+                        <span class="stats-number countup">967</span>
+                        <p class="stats-info">New Orders</p>
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-user-plus stats-icon text-warning"></i>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="progress mb-0 mt-3">
+                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+                            <span class="sr-only">40% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card card-white stats-widget">
+                <div class="card-body">
+                    <div class="float-left">
+                        <span class="stats-number countup">991</span>
+                        <p class="stats-info">New Users</p>
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-tasks stats-icon text-success"></i>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="progress mb-0 mt-3">
+                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100" style="width: 58%;">
+                            <span class="sr-only">58% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card card-white">
+                        <div class="card-heading clearfix">
+                            <h4 class="card-title">Booking Request</h4>
+                        </div>
+                        <div class="card-body">
+                           <canvas id="booking_request"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card card-white">
+                        <div class="card-heading clearfix">
+                            <h4 class="card-title">My Booking</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="my_booking"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
+
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+    <script>
+        var booking_request_config = {
+            type: 'bar',
+            data: {
+              labels: {{booking_request_labels|safe}},
+              datasets: [
+              {
+
+                barThickness: 20,
+                  label: "Booking Request Per Month",
+                  backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                  data: {{booking_request_data|safe}}
+              }
+              ]
+          },
+          options: {
+                legend: { display: false },
+                  title: {
+                    display: true,
+                    text: 'Booking Request Per Month'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+
+        }
+
+
+
+
+        var my_booking_config = {
+            type: 'bar',
+            data: {
+              labels: {{my_booking_labels|safe}},
+              datasets: [
+              {
+
+                barThickness: 20,
+                  label: "My Booking Per Month",
+                  backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                  data: {{my_booking_data|safe}}
+              }
+              ]
+          },
+          options: {
+                legend: { display: false },
+                  title: {
+                    display: true,
+                    text: 'My Booking Per Month'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+
+        }
+
+        window.onload = function() {
+            var booking_request_ctx = document.getElementById('booking_request').getContext('2d');
+            window.myBar1 = new Chart(booking_request_ctx, booking_request_config);
+
+            var my_booking_ctx = document.getElementById('my_booking').getContext('2d');
+            window.myBar2 = new Chart(my_booking_ctx, my_booking_config);
+        };
+    </script>
+{% endblock script %}

@@ -11,7 +11,11 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from listings.models import Listing, ListingRating, ListingBooking
 from listings.forms import ChangeBookingStatus
+import json
 from django.db.models import Q
+import datetime
+from django.db.models import Count
+from django.db.models.functions import TruncMonth
 from .mixins import AictiveUserRequiredMixin
 from django.views import View, generic
 
@@ -76,8 +80,32 @@ def activate(request, uidb64, token):
 
 class Dashboard(AictiveUserRequiredMixin, View):
     def get(self, request, *args, **kwrags):
+        booking_request = ListingBooking.objects.filter(
+            listing__owner=self.request.user).annotate(month=TruncMonth('end_time')).values('month').annotate(total=Count('id'))
+
+        my_booking = ListingBooking.objects.filter(
+            user=self.request.user).annotate(month=TruncMonth('end_time')).values('month').annotate(total=Count('id'))
+
+        booking_request_labels = []
+        booking_request_data = []
+        for m_b in booking_request:
+            booking_request_labels.append(m_b['month'].strftime("%B"))
+            booking_request_data.append(m_b['total'])
+
+        my_booking_labels = []
+        my_booking_data = []
+        for m_b in my_booking:
+            my_booking_labels.append(m_b['month'].strftime("%B"))
+            my_booking_data.append(m_b['total'])
+
         context = {
-            'title': 'Dashboard'
+            'title': 'Dashboard',
+            'booking_request': booking_request,
+            'my_booking': my_booking,
+            'booking_request_labels': booking_request_labels,
+            'booking_request_data': booking_request_data,
+            'my_booking_labels': my_booking_labels,
+            'my_booking_data': my_booking_data
         }
         return render(request, 'accounts/dashboard.html', context)
 
