@@ -5,10 +5,6 @@ from django.contrib.messages import constants as messages
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '7vvvz1m#z7c_@g^q@ll&q3vs0lv5bi_g$fa3u9td#2b^w9!)i)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
