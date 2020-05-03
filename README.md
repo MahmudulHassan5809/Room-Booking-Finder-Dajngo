@@ -10,7 +10,7 @@ Rent or Book Room online with Finder
 
 <h2>Installing</h2>
 <pre>open terminal and type</pre>
-<code>git clone https://github.com/MahmudulHassan5809/olx-clone-resale.git</code><br><br>
+<code>git clone https://github.com/MahmudulHassan5809/Room-Booking-Finder-Dajngo.git</code><br><br>
 
 <h2>To migrate the database open terminal in project directory and type</h2>
 <code>python manage.py makemigrations</code><br>
