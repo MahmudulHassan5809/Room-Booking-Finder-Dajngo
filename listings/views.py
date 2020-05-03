@@ -5,11 +5,11 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Avg, Max, Min, Sum, F, IntegerField
-from .models import Listing, Category, ListingImage, ListingExtra, ListingRating, ListingComment, ListingBooking
+from .models import Listing, Category, ListingImage, ListingExtra, ListingRating, ListingComment, ListingBooking, Contact
 from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
 from listings.mixins import OwnerShipMixin
-from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCommentForm, ListingBookingForm
+from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCommentForm, ListingBookingForm, ContactForm
 from django.urls import reverse_lazy, reverse
 import re
 from taggit.models import Tag
@@ -454,3 +454,16 @@ class ListingBookingView(AictiveUserRequiredMixin, View):
         else:
             messages.info(request, listing_booking_form.errors)
             return redirect('listings:listing_details', listing_obj.slug)
+
+
+class ContactView(SuccessMessageMixin, generic.CreateView):
+    model = Contact
+    template_name = 'listings/contact.html'
+    form_class = ContactForm
+    success_message = 'Thanks For You Message.We Will Contact You Soon'
+    success_url = reverse_lazy('listings:contact')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Contact Us'
+        return context

@@ -1,4 +1,4 @@
-from .models import Category, Listing
+from .models import Category, Listing, SiteDetails
 
 
 def categories(request):
@@ -21,3 +21,8 @@ def areas(request):
     all_area = Listing.objects.order_by(
         'area').values_list('area', flat=True).distinct()
     return {'all_area': all_area}
+
+
+def setting(request):
+    setting = SiteDetails.objects.all().first()
+    return {'setting': setting}

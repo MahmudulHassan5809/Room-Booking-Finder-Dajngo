@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Listing, Category, ListingRating, ListingComment, ListingBooking
+from .models import Listing, Category, ListingRating, ListingComment, ListingBooking, Contact
 from taggit.forms import TagWidget
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
@@ -183,3 +183,12 @@ class ChangeBookingStatus(ModelForm):
         super(ChangeBookingStatus, self).__init__(*args, **kwargs)
 
         self.fields['status'].label = ''
+
+
+class ContactForm(ModelForm):
+    message = forms.CharField(widget=forms.Textarea(
+        attrs={'rows': 4, 'cols': 40}))
+
+    class Meta:
+        model = Contact
+        fields = '__all__'

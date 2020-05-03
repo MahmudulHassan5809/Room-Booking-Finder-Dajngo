@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import escape, mark_safe
-from .models import Category, Listing, ListingImage, ListingExtra, ListingRating, ListingComment, ListingBooking
+from .models import Category, Listing, ListingImage, ListingExtra, ListingRating, ListingComment, ListingBooking, SiteDetails, Contact
 
 
 # Register your models here.
@@ -83,3 +83,27 @@ class ListingBookingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ListingBooking, ListingBookingAdmin)
+
+
+class SiteDetailsAdmin(admin.ModelAdmin):
+    list_display = ["sologan", "location", "email", "phone",
+                    "facebook_url", "twitter_url", "linkdin_url", "instagram_url"]
+    list_per_page = 20
+
+    def has_add_permission(self, request):
+        return False if self.model.objects.count() > 0 else True
+
+
+admin.site.register(SiteDetails, SiteDetailsAdmin)
+
+
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ["name", "email", "subject", "short_description"]
+    search_fields = ('name', 'email',
+                     'subject')
+    list_per_page = 20
+
+
+
+
+admin.site.register(Contact, ContactAdmin)

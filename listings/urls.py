@@ -52,4 +52,7 @@ urlpatterns = [
     path('listing/search',
          views.ListingSearchView.as_view(), name="listing_search"),
 
+    path('listing/contact',
+         views.ContactView.as_view(), name="contact"),
+
 ]

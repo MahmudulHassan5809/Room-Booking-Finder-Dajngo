@@ -9,6 +9,7 @@ from django.db.models import CheckConstraint, Q, UniqueConstraint
 from django.core.validators import MinValueValidator, MaxValueValidator
 from taggit.managers import TaggableManager
 from listings.tasks import set_booked_as_inactive
+from django.template.defaultfilters import truncatechars
 
 # Create your models here.
 
@@ -227,6 +228,35 @@ class ListingBooking(models.Model):
 
     def __str__(self):
         return f"{self.user.username} books {self.listing.title}"
+
+
+class SiteDetails(models.Model):
+    sologan = models.TextField(null=True, blank=True)
+    location = models.CharField(max_length=230)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+
+    facebook_url = models.URLField(max_length=200, null=True, blank=True)
+    twitter_url = models.URLField(max_length=200, null=True, blank=True)
+    linkdin_url = models.URLField(max_length=200, null=True, blank=True)
+    instagram_url = models.URLField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return self.email
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+
+    @property
+    def short_description(self):
+        return truncatechars(self.message, 35)
+
+    def __str__(self):
+        return self.subject
 
 
 @receiver(post_save, sender=ListingBooking)

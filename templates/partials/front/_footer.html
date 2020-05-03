@@ -5,7 +5,7 @@
                     <div class="row">
                         <div class="col-lg-4 col-sm-12 sm-margin-40px-bottom">
                             <img src="{% static 'front/img/logos/logo.png' %}" class="width-50 margin-30px-bottom xs-margin-20px-bottom" alt="" />
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla. Nulla posuere.</p>
+                            <p>{{setting.sologan}}</p>
                         </div>
 
                         <div class="col-lg-4 col-sm-12 sm-margin-40px-bottom">
@@ -13,15 +13,15 @@
                             <ul class="list-style-1 no-margin">
                                 <li>
                                     <span class="d-inline-block vertical-align-top font-size18"><i class="ti-location-pin text-theme-color"></i></span>
-                                    <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">74 Guild Street 542B, Great North Town MT.</span>
+                                    <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">{{setting.location}}</span>
                                 </li>
                                 <li>
                                     <span class="d-inline-block vertical-align-top font-size18"><i class="ti-mobile text-theme-color"></i></span>
-                                    <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">4355 6567 789</span>
+                                    <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">{{setting.phone}}</span>
                                 </li>
                                 <li>
                                     <span class="d-inline-block vertical-align-top font-size18"><i class="ti-email text-theme-color"></i></span>
-                                    <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">example@yourname.com</span>
+                                    <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">{{setting.email}}</span>
                                 </li>
                             </ul>
                         </div>
@@ -35,7 +35,7 @@
                                     <li><a href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
                                 {% endif %}
                                 <li><a href="blog-grid.html">Blog</a></li>
-                                <li><a href="contact-us.html">Contact Us</a></li>
+                                <li><a href="{% url 'listings:contact' %}">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -48,21 +48,21 @@
                     <div class="float-right xs-width-100 text-center xs-margin-5px-bottom">
                         <ul class="social-icon-style no-margin">
                             <li>
-                                <a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a>
+                                <a href="{{setting.facebook_url}}"><i class="fab fa-facebook-f"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="fab fa-twitter"></i></a>
+                                <a href="{{setting.twitter_url}}"><i class="fab fa-twitter"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="fab fa-instagram"></i></a>
+                                <a href="{{setting.linkdin_url}}"><i class="fab fa-instagram"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="{{setting.instagram_url}}"><i class="fab fa-linkedin-in"></i></a>
                             </li>
                         </ul>
                     </div>
                     <div class="float-left xs-width-100 text-center">
-                        <p class="text-medium-gray font-weight-600 margin-5px-top xs-no-margin-top">&copy; 2020 Finder is Powered by Chitrakoot Web</p>
+                        <p class="text-medium-gray font-weight-600 margin-5px-top xs-no-margin-top">&copy; {% now "Y" %} Finder is Powered by <a href="http://github.com/MahmudulHassan5809">Mahmudul Hassan</a></p>
                     </div>
                 </div>
             </div>
