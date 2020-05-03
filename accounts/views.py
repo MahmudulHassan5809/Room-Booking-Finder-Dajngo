@@ -17,6 +17,7 @@ import datetime
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from .mixins import AictiveUserRequiredMixin
+from listings.mixins import OwnerShipMixin
 from django.views import View, generic
 
 # Create your views here.
@@ -86,6 +87,18 @@ class Dashboard(AictiveUserRequiredMixin, View):
         my_booking = ListingBooking.objects.filter(
             user=self.request.user).annotate(month=TruncMonth('end_time')).values('month').annotate(total=Count('id'))
 
+        booking_request_count = ListingBooking.objects.filter(
+            listing__owner=self.request.user).count()
+
+        my_booking_count = ListingBooking.objects.filter(
+            user=self.request.user).count()
+
+        my_listing_count = Listing.objects.filter(
+            owner=self.request.user).count()
+
+        my_listing_review_count = ListingRating.objects.filter(
+            listing__owner=self.request.user).count()
+
         booking_request_labels = []
         booking_request_data = []
         for m_b in booking_request:
@@ -100,8 +113,10 @@ class Dashboard(AictiveUserRequiredMixin, View):
 
         context = {
             'title': 'Dashboard',
-            'booking_request': booking_request,
-            'my_booking': my_booking,
+            'booking_request_count': booking_request_count,
+            'my_booking_count': my_booking_count,
+            'my_listing_count': my_listing_count,
+            'my_listing_review_count': my_listing_review_count,
             'booking_request_labels': booking_request_labels,
             'booking_request_data': booking_request_data,
             'my_booking_labels': my_booking_labels,

@@ -8,6 +8,7 @@ from django.db.models import Avg, Max, Min, Sum, F, IntegerField
 from .models import Listing, Category, ListingImage, ListingExtra, ListingRating, ListingComment, ListingBooking
 from django.contrib.auth.models import User
 from accounts.mixins import AictiveUserRequiredMixin
+from listings.mixins import OwnerShipMixin
 from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCommentForm, ListingBookingForm
 from django.urls import reverse_lazy, reverse
 import re
@@ -176,7 +177,7 @@ class AddListing(AictiveUserRequiredMixin, View):
             return render(request, 'listings/add_listing.html', context)
 
 
-class EditListing(AictiveUserRequiredMixin, SuccessMessageMixin, generic.edit.UpdateView):
+class EditListing(AictiveUserRequiredMixin, OwnerShipMixin, SuccessMessageMixin, generic.edit.UpdateView):
     model = Listing
     form_class = EditListingForm
     template_name = 'accounts/update_listing.html'
@@ -223,6 +224,15 @@ class UpdateListingImage(AictiveUserRequiredMixin, View):
         messages.success(request, 'Image Added Successfully')
         return redirect('listings:edit_listing', listing_slug)
 
+    def dispatch(self, request, *args, **kwargs):
+        listing_slug = self.kwargs.get('slug')
+        listing_obj = get_object_or_404(Listing, slug=listing_slug)
+
+        if listing_obj.owner != self.request.user:
+            messages.error(request, ('You are not allowed to edit this Post'))
+            return redirect('accounts:dashboard')
+        return super(UpdateListingImage, self).dispatch(request, *args, **kwargs)
+
 
 class DeleteListingImage(AictiveUserRequiredMixin, generic.edit.DeleteView):
     model = ListingImage
@@ -238,6 +248,13 @@ class DeleteListingImage(AictiveUserRequiredMixin, generic.edit.DeleteView):
             return reverse_lazy('listings:edit_listing', kwargs={'slug': self.kwargs['slug']})
         else:
             return reverse_lazy('listings:edit_listing', args=(self.object.listing.slug))
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.listing.owner != self.request.user:
+            messages.error(request, ('You are not allowed to edit this Post'))
+            return redirect('accounts:dashboard')
+        return super(DeleteListingImage, self).dispatch(request, *args, **kwargs)
 
 
 class UpdateListingExtra(AictiveUserRequiredMixin, View):
@@ -255,6 +272,15 @@ class UpdateListingExtra(AictiveUserRequiredMixin, View):
         messages.success(request, 'Listing Extras Added Successfully')
         return redirect('listings:edit_listing', listing_slug)
 
+    def dispatch(self, request, *args, **kwargs):
+        listing_slug = self.kwargs.get('slug')
+        listing_obj = get_object_or_404(Listing, slug=listing_slug)
+
+        if listing_obj.owner != self.request.user:
+            messages.error(request, ('You are not allowed to edit this Post'))
+            return redirect('accounts:dashboard')
+        return super(UpdateListingExtra, self).dispatch(request, *args, **kwargs)
+
 
 class DeleteListingExtra(AictiveUserRequiredMixin, generic.edit.DeleteView):
     model = ListingExtra
@@ -271,6 +297,13 @@ class DeleteListingExtra(AictiveUserRequiredMixin, generic.edit.DeleteView):
         else:
             return reverse_lazy('listings:edit_listing', args=(self.object.listing.slug))
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.listing.owner != self.request.user:
+            messages.error(request, ('You are not allowed to edit this Post'))
+            return redirect('accounts:dashboard')
+        return super(DeleteListingExtra, self).dispatch(request, *args, **kwargs)
+
 
 class ListingStatusToggle(AictiveUserRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -283,6 +316,15 @@ class ListingStatusToggle(AictiveUserRequiredMixin, View):
         messages.success(
             request, 'Listing Active Status Changed Successfully...')
         return redirect('accounts:my_listing')
+
+    def dispatch(self, request, *args, **kwargs):
+        listing_slug = self.kwargs.get('slug')
+        listing_obj = get_object_or_404(Listing, slug=listing_slug)
+
+        if listing_obj.owner != self.request.user:
+            messages.error(request, ('You are not allowed to edit this Post'))
+            return redirect('accounts:dashboard')
+        return super(ListingStatusToggle, self).dispatch(request, *args, **kwargs)
 
 
 class DeleteListing(AictiveUserRequiredMixin, SuccessMessageMixin, generic.edit.DeleteView):
@@ -299,6 +341,13 @@ class DeleteListing(AictiveUserRequiredMixin, SuccessMessageMixin, generic.edit.
         context = super().get_context_data(**kwargs)
         context['title'] = 'Delete Listing'
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.owner != self.request.user:
+            messages.error(request, ('You are not allowed to edit this Post'))
+            return redirect('accounts:dashboard')
+        return super(DeleteListingExtra, self).dispatch(request, *args, **kwargs)
 
 
 class ListingRatingView(AictiveUserRequiredMixin, View):

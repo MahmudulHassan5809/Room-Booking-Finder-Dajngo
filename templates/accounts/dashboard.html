@@ -22,12 +22,15 @@
 
 {% block content %}
     <div class="row">
+        <div class="col-md-12">
+            {% include 'partials/_alert.html' %}
+        </div>
         <div class="col-xl-3 col-lg-6 col-md-6">
             <div class="card card-white stats-widget">
                 <div class="card-body">
                     <div class="float-left">
-                        <span class="stats-number countup">813</span>
-                        <p class="stats-info">Total Profit</p>
+                        <span class="stats-number countup">{{booking_request_count}}</span>
+                        <p class="stats-info">Booking Request</p>
                     </div>
                     <div class="float-right">
                         <i class="fas fa-dollar-sign text-primary stats-icon"></i>
@@ -45,8 +48,8 @@
             <div class="card card-white stats-widget">
                 <div class="card-body">
                     <div class="float-left">
-                        <span class="stats-number countup">505</span>
-                        <p class="stats-info">Feedbacks</p>
+                        <span class="stats-number countup">{{my_booking_count}}</span>
+                        <p class="stats-info">My Booking</p>
                     </div>
                     <div class="float-right">
                         <i class="fas fa-download stats-icon text-danger"></i>
@@ -64,8 +67,8 @@
             <div class="card card-white stats-widget">
                 <div class="card-body">
                     <div class="float-left">
-                        <span class="stats-number countup">967</span>
-                        <p class="stats-info">New Orders</p>
+                        <span class="stats-number countup">{{my_listing_count}}</span>
+                        <p class="stats-info">My Listing Count</p>
                     </div>
                     <div class="float-right">
                         <i class="fas fa-user-plus stats-icon text-warning"></i>
@@ -83,8 +86,8 @@
             <div class="card card-white stats-widget">
                 <div class="card-body">
                     <div class="float-left">
-                        <span class="stats-number countup">991</span>
-                        <p class="stats-info">New Users</p>
+                        <span class="stats-number countup">{{my_listing_review_count}}</span>
+                        <p class="stats-info">My Listing Review</p>
                     </div>
                     <div class="float-right">
                         <i class="fas fa-tasks stats-icon text-success"></i>

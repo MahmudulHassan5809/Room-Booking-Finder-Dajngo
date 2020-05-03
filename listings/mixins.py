@@ -4,11 +4,12 @@ from django.http import HttpResponse
 import json
 
 
-# class OwnerShipMixin:
-#     def dispatch(self, request, *args, **kwargs):
-#         if request.user.is_authenticated and request.user.user_profile.active and request.user.user_profile.email_confirmed:
-#             return super().dispatch(request, *args, **kwargs)
-#         else:
-#             messages.error(
-#                 request, ('Please Login Or May Be Your Account Is Not Active'))
-#             return redirect('accounts:login')
+class OwnerShipMixin:
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if request.user == obj.owner:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            messages.error(
+                request, ('You are not allowed to modify this Post'))
+            return redirect('accounts:dashboard')
