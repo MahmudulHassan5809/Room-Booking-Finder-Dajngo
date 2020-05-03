@@ -214,17 +214,17 @@ class ListingBooking(models.Model):
     start_time = models.DateField()
     end_time = models.DateField()
 
-    def save(self, *args, **kwargs):
-        create_task = False
-        if self.pk is None:
-            create_task = True
+    # def save(self, *args, **kwargs):
+    #     create_task = False
+    #     if self.pk is None:
+    #         create_task = True
 
-        super(ListingBooking, self).save(*args, **kwargs)
+    #     super(ListingBooking, self).save(*args, **kwargs)
 
-        if create_task and self.end_time:
-            print('okskksksk')
-            set_booked_as_inactive.apply_async(
-                args=[self.listing.id, self.id], eta=self.end_time)
+    #     if create_task and self.end_time:
+    #         print('okskksksk')
+    #         set_booked_as_inactive.apply_async(
+    #             args=[self.listing.id, self.id], eta=self.end_time)
 
     def __str__(self):
         return f"{self.user.username} books {self.listing.title}"
