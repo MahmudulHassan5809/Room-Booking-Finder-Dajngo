@@ -63,6 +63,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'listings.context_processor.categories',
                 'listings.context_processor.common_tags',
+                'listings.context_processor.cities',
+                'listings.context_processor.areas',
             ],
         },
     },

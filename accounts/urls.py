@@ -32,6 +32,9 @@ urlpatterns = [
     path('listing/change/booking-status/<int:id>',
          views.ChangeBookingStatusView.as_view(), name="change_booking_status"),
 
+    path('listing/my-wallet',
+         views.MyWalletView.as_view(), name="my_wallet"),
+
 
     path('logout/', views.LogoutView.as_view(), name='logout'),
 

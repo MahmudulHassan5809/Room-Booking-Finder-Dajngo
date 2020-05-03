@@ -49,4 +49,7 @@ urlpatterns = [
     path('listing/booking/<int:id>',
          views.ListingBookingView.as_view(), name="listing_booking"),
 
+    path('listing/search',
+         views.ListingSearchView.as_view(), name="listing_search"),
+
 ]

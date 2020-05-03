@@ -263,6 +263,30 @@ class ChangeBookingStatusView(AictiveUserRequiredMixin, View):
         return super(ChangeBookingStatusView, self).dispatch(request, *args, **kwargs)
 
 
+class MyWalletView(AictiveUserRequiredMixin, generic.ListView):
+    model = ListingBooking
+    context_object_name = 'booking_list'
+    paginate_by = 10
+    template_name = 'accounts/wallet_list.html'
+
+    def get_queryset(self):
+        booking_list = ListingBooking.objects.filter(
+            listing__owner=self.request.user)
+
+        return booking_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['booking_request_count'] = ListingBooking.objects.filter(
+            listing__owner=self.request.user).count()
+        context['my_listing_count'] = Listing.objects.filter(
+            owner=self.request.user).count()
+
+        context['title'] = 'Wallet List'
+        return context
+
+
 class LogoutView(AictiveUserRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         logout(request)

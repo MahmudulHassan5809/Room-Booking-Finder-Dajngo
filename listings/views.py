@@ -13,6 +13,8 @@ from .forms import AddListingForm, EditListingForm, ListingRatingForm, ListingCo
 from django.urls import reverse_lazy, reverse
 import re
 from taggit.models import Tag
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views import View
 
@@ -71,6 +73,44 @@ class TagListing(generic.ListView):
         context = super().get_context_data(**kwargs)
         tag_slug = self.kwargs.get('slug')
         context['title'] = f'{tag_slug} Listings'
+        return context
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ListingSearchView(generic.ListView):
+    model = Listing
+    context_object_name = 'listing_list'
+    paginate_by = 10
+    template_name = 'listings/liting_list.html'
+
+    def get_queryset(self):
+        category_id = self.request.GET.get('category')
+        category_obj = get_object_or_404(Category, id=category_id)
+
+        listing_list = category_obj.category_listings.all()
+
+        if self.request.GET.get('city'):
+            city = self.request.GET.get('city')
+            listing_list = listing_list.filter(city__exact=city)
+        if self.request.GET.get('area'):
+            area = self.request.GET.get('area')
+            listing_list = listing_list.filter(area__exact=area)
+        if self.request.GET.get('query'):
+            query = self.request.GET.get('query')
+            listing_list = listing_list.filter(title__icontains=query)
+
+        today = datetime.now().date()
+        listing_list = listing_list.filter(
+            Q(end_time__gte=today) | Q(end_time=None))
+
+        print(listing_list)
+
+        return listing_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tag_slug = self.kwargs.get('slug')
+        context['title'] = f'Search Result'
         return context
 
 
