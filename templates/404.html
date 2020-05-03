@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{title}}
+    404
 {% endblock title %}
 
 
@@ -17,7 +17,7 @@
                             <h1 class="title text-theme-color">404</h1>
                             <h2 class="font-size40 xs-font-size22 margin-40px-bottom xs-margin-20px-bottom">Page not found</h2>
                             <a href="{% url 'listings:home' %}" class="butn mr-2 my-1 my-sm-0">Back to Home</a>
-                            <a href="contact-us.html" class="butn my-1 my-sm-0">Contact Us</a>
+                            <a href="{% url 'listings:contact' %}" class="butn my-1 my-sm-0">Contact Us</a>
                         </div>
                     </div>
 

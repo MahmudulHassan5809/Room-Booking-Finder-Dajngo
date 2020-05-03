@@ -31,3 +31,8 @@ if settings.FORCE_STATIC_FILE_SERVING and not settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
     settings.DEBUG = False
+
+
+admin.site.site_header = "Finder Admin"
+admin.site.site_title = "Finder Admin Portal"
+admin.site.index_title = "Welcome to Finder Researcher Portal"
