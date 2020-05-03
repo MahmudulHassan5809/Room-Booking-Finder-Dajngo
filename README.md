@@ -24,18 +24,28 @@ Rent or Book Room online with Finder
 <pre>To create superuser open terminal and type</pre>
 <code>python manage.py createsuperuser</code>
 
+<h2>Change In settings.py</h2>
+<code>
+
+    EMAIL_USE_TLS = True
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = 'xxxxxx@gmail.com'
+    EMAIL_HOST_PASSWORD = 'xxxxxxxxxx'
+    EMAIL_PORT = 587
+</code>
+
 <h2> To run the program in local server use the following command </h2>
 <code>python manage.py runserver</code>
 
 <p>Then go to http://127.0.0.1:8000 in your browser</p>
 
 <p>
-    If You Want To use celery To Auto change the Listing Status Then Uncomment the code in models.py in listings folder.Please Setup Celery and RabbitMQ
+  If You Want To use celery To Auto change the Listing Status Then Uncomment the code in models.py in listings folder.Please Setup Celery and RabbitMQ
 <p>
 
 <code>
 
-       #ListingBooking Class
+     #ListingBooking Class
        def save(self, *args, **kwargs):
           create_task = False
           if self.pk is None:
