@@ -1,4 +1,5 @@
 from django import template
+from django.db.models import Avg, IntegerField
 
 register = template.Library()
 
@@ -10,6 +11,15 @@ def percentage(value):
     else:
         return 'Not Avialable'
 
+
+@register.filter
+def overall_rating(value):
+    x = value.listing_ratings.all(
+    ).aggregate(Avg(('rating'), output_field=IntegerField()))
+    if x['rating__avg']:
+        return x['rating__avg']
+    else:
+        return 0
 
 # @register.filter()
 # @register.inclusion_tag('store/sell_details.html', takes_context=True)

@@ -17,10 +17,16 @@ def cities(request):
     return {'all_city': all_city}
 
 
-def areas(request):
-    all_area = Listing.objects.order_by(
-        'area').values_list('area', flat=True).distinct()
-    return {'all_area': all_area}
+def all_location(request):
+    all_location = Listing.objects.order_by(
+        'location').values_list('location', flat=True).distinct()
+    return {'all_location': all_location}
+
+
+def recent_listings(reques):
+    recent_listings = Listing.active_objects.filter(
+        booked=False).order_by('-created_at')[:4]
+    return {'recent_listings': recent_listings}
 
 
 def setting(request):

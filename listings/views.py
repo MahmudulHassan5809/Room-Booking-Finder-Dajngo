@@ -84,17 +84,22 @@ class ListingSearchView(generic.ListView):
     template_name = 'listings/liting_list.html'
 
     def get_queryset(self):
-        category_id = self.request.GET.get('category')
-        category_obj = get_object_or_404(Category, id=category_id)
-
-        listing_list = category_obj.category_listings.all()
+        if self.request.GET.get('category'):
+            category_id = self.request.GET.get('category')
+            try:
+                category_obj = get_object_or_404(Category, id=category_id)
+                listing_list = category_obj.category_listings.all()
+            except Exception as e:
+                listing_list = Listing.active_objects.all()
+        else:
+            listing_list = Listing.active_objects.all()
 
         if self.request.GET.get('city'):
             city = self.request.GET.get('city')
             listing_list = listing_list.filter(city__exact=city)
-        if self.request.GET.get('area'):
-            area = self.request.GET.get('area')
-            listing_list = listing_list.filter(area__exact=area)
+        if self.request.GET.get('location'):
+            location = self.request.GET.get('location')
+            listing_list = listing_list.filter(location__exact=location)
         if self.request.GET.get('query'):
             query = self.request.GET.get('query')
             listing_list = listing_list.filter(title__icontains=query)
@@ -102,8 +107,6 @@ class ListingSearchView(generic.ListView):
         today = datetime.now().date()
         listing_list = listing_list.filter(
             Q(end_time__gte=today) | Q(end_time=None))
-
-        print(listing_list)
 
         return listing_list
 
@@ -397,6 +400,13 @@ class ListingRatingView(AictiveUserRequiredMixin, View):
 
         check_rating = listing_obj.listing_ratings.filter(
             user=request.user).first()
+        book_check = ListingBooking.objects.filter(
+            listing=listing_obj, user=request.user).first()
+
+        if book_check is None:
+            messages.error(request, f'Please First Book This {listing_obj.title} To Rate')
+            return redirect('listings:listing_details', listing_obj.slug)
+
         if check_rating:
             messages.error(request, f'You Already Gave Your Rating For {listing_obj.title}')
             return redirect('listings:listing_details', listing_obj.slug)

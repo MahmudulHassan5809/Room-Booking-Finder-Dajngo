@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7vvvz1m#z7c_@g^q@ll&q3vs0lv5bi_g$fa3u9td#2b^w9!)i)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'six',
     'accounts',
     'listings',
+    'blog',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -30,7 +31,10 @@ INSTALLED_APPS = [
     'crispy_forms',
     'taggit',
     'django_cleanup.apps.CleanupConfig',
+
+    # 'django_extensions',
 ]
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -61,8 +65,9 @@ TEMPLATES = [
                 'listings.context_processor.categories',
                 'listings.context_processor.common_tags',
                 'listings.context_processor.cities',
-                'listings.context_processor.areas',
+                'listings.context_processor.all_location',
                 'listings.context_processor.setting',
+                'listings.context_processor.recent_listings',
             ],
         },
     },

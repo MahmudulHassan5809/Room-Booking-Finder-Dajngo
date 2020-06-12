@@ -2,7 +2,16 @@
 
 {% load static %}
 
+{% load simple_tag %}
+
 {% load crispy_forms_tags %}
+
+{% block style %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.css">
+    <style>
+        .star .fa-star{color: yellow;font-size: 20px;}
+    </style>
+{% endblock style %}
 
 
 {% block title %}
@@ -45,17 +54,18 @@
                                     </div>
                                     <div class="media-body">
                                         <div class="star">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o" data-rating="1"></i>
+                                            <i class="fa fa-star-o" data-rating="2"></i>
+                                            <i class="fa fa-star-o" data-rating="3"></i>
+                                            <i class="fa fa-star-o" data-rating="4"></i>
+                                            <i class="fa fa-star-o" data-rating="5"></i>
+                                            <input type="hidden" class="rating-value" value="{{listing|overall_rating}}">
                                         </div>
                                         <h5 class="mb-1 mt-2">
                                             <a href="#" class="text-extra-dark-gray">{{listing.title}}</a>
                                         </h5>
                                         <span class="d-block mb-4">{{listing.area}}--{{listing.city}}</span>
-                                        <a href="#" class="text-primary"><i class="far fa-heart margin-5px-right"></i> 7 k</a>
+                                        <a href="#" class="text-primary"><i class="far fa-envelope margin-5px-right"></i> {{listing.listing_comments.count}}</a>
                                     </div>
                                 </div>
                                 <div class="buttons-to-right">
@@ -96,3 +106,7 @@
 {% endblock content %}
 
 
+
+{% block script %}
+    <script src="{% static 'front/js/rating.js' %}"></script>
+{% endblock script %}

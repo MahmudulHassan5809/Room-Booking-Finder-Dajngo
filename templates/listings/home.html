@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="text-center margin-40px-bottom">
                     <h3 class="margin-10px-bottom">Featured Categories</h3>
-                    <p class="no-margin-bottom">Lorem Ipsum is simply dummy printing</p>
+                    <p class="no-margin-bottom"></p>
                 </div>
                 <div class="row">
                     {% for cat in all_categories %}
@@ -27,6 +27,7 @@
                                     </div>
                                     <div>
                                         <h5 class="font-size20">{{cat.name}}</h5>
+                                        <img src="{{cat.image.url}}" alt="">
                                         <i class="fas fa-list font-size32 text-theme-color"></i>
                                     </div>
                                 </div>
@@ -42,20 +43,19 @@
     <section>
             <div class="container">
                 <div class="text-center margin-40px-bottom">
-                    <h3 class="margin-10px-bottom">Find Rooms  Near You</h3>
-                    <p class="no-margin-bottom">Find Rooms In Reasonable Price For Your Night</p>
+                    <h3 class="margin-10px-bottom">Find Flat  Near You</h3>
+                    <p class="no-margin-bottom">Find Falt In Reasonable Price For Your Night</p>
                 </div>
                 <div class="row">
-                    {% for cat in all_categories %}
-
-
-
+                    {% for listing in recent_listings %}
                     <div class="col-md-6 col-lg-4 margin-30px-bottom">
-                        <a href="{% url 'listings:category_listing' cat.slug %}" class="card bg-img box-hover cover-background border-0 p-4 h-100" data-background="{{cat.image.url}}">
+                        <a href="{% url 'listings:listing_details' listing.slug %}" class="card bg-img box-hover cover-background border-0 p-4 h-100" data-background="{% with listing.listing_images.all|first as image %}
+                            {{image.image.url}}
+                        {% endwith %}">
                             <div class="mt-auto position-relative z-index-9">
-                                <h5 class="text-white">{{cat.name}}</h5>
+                                <h5 class="text-white">{{listing.title}}</h5>
                                 <hr class="border-color-light-white">
-                                <div class="position-relative z-index-9 text-white"><span class="ti-location-pin text-primary"></span> 6 Locations</div>
+                                <div class="position-relative z-index-9 text-white"><span class="ti-location-pin text-primary"></span> {{listing.location}}</div>
                             </div>
                         </a>
                     </div>

@@ -22,7 +22,7 @@ class Category(models.Model):
 
     class Meta():
         verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = '1. Categories'
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -86,11 +86,12 @@ class Listing(models.Model):
 
     price = models.FloatField()
 
-    area = models.CharField(max_length=200)
-
     rooms = models.CharField(max_length=10, choices=ROOMS_CHOICES)
     wash_rooms = models.CharField(max_length=10, choices=WASHROOM_CHOICES)
 
+    flat_area = models.FloatField()
+
+    location = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     zip_code = models.CharField(max_length=200)
 
@@ -100,12 +101,16 @@ class Listing(models.Model):
     start_time = models.DateField()
     end_time = models.DateField(null=True, blank=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+
     tags = TaggableManager()
 
     objects = models.Manager()
     active_objects = ActiveListingManager()
 
     class Meta:
+        verbose_name = 'Listing'
+        verbose_name_plural = '2. Listings'
         ordering = ['-id']
 
     def save(self, *args, **kwargs):
@@ -128,6 +133,10 @@ class ListingImage(models.Model):
         Listing, on_delete=models.CASCADE, related_name='listing_images')
     image = models.ImageField(upload_to="product/%Y/%m/%d/")
 
+    class Meta:
+        verbose_name = 'Listing Image'
+        verbose_name_plural = '3. Listing Images'
+
     def __str__(self):
         return self.listing.title
 
@@ -142,6 +151,10 @@ class ListingExtra(models.Model):
         Listing, on_delete=models.CASCADE, related_name='listing_extras')
     facility_name = models.CharField(max_length=255)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+
+    class Meta:
+        verbose_name = 'Listing Extra'
+        verbose_name_plural = '4. Listing Extras'
 
     def __str__(self):
         return self.listing.title
@@ -167,6 +180,8 @@ class ListingRating(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     class Meta:
+        verbose_name = 'Listing Rating'
+        verbose_name_plural = '5. Listing Rating'
         constraints = [
             CheckConstraint(check=Q(rating__range=(0, 5)),
                             name='valid_rating'),
@@ -190,6 +205,10 @@ class ListingComment(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_comments')
     comment = models.TextField()
+
+    class Meta:
+        verbose_name = 'Comment'
+        verbose_name_plural = '6. Comments'
 
     def __str__(self):
         return f"{self.user.username} comments on {self.listing.title}"
@@ -226,6 +245,10 @@ class ListingBooking(models.Model):
     #         set_booked_as_inactive.apply_async(
     #             args=[self.listing.id, self.id], eta=self.end_time)
 
+    class Meta:
+        verbose_name = 'Booking'
+        verbose_name_plural = '7. Bookings'
+
     def __str__(self):
         return f"{self.user.username} books {self.listing.title}"
 
@@ -241,6 +264,10 @@ class SiteDetails(models.Model):
     linkdin_url = models.URLField(max_length=200, null=True, blank=True)
     instagram_url = models.URLField(max_length=200, null=True, blank=True)
 
+    class Meta:
+        verbose_name = 'Site Setting'
+        verbose_name_plural = '8. Site Settings'
+
     def __str__(self):
         return self.email
 
@@ -250,6 +277,10 @@ class Contact(models.Model):
     email = models.EmailField()
     subject = models.CharField(max_length=255)
     message = models.TextField()
+
+    class Meta:
+        verbose_name = 'Contact'
+        verbose_name_plural = '9. Contact'
 
     @property
     def short_description(self):

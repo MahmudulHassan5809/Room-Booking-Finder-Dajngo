@@ -8,6 +8,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls', namespace="accounts")),
+    path('blog/', include('blog.urls', namespace="blog")),
     path('', include('listings.urls', namespace="listings")),
 
     path('password_reset/', auth_views.PasswordResetView.as_view(),

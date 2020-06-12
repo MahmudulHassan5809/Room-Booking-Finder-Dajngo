@@ -6,12 +6,12 @@
                 <!-- start top search -->
                 <div class="top-search bg-theme">
                     <div class="container">
-                        <form class="search-form" action="https://www.chitrakootweb.com/template/finders/search.html" method="GET" accept-charset="utf-8">
+                        <form class="search-form" action="{% url 'listings:listing_search' %}" method="GET" accept-charset="utf-8">
                             <div class="input-group">
                                 <span class="input-group-addon cursor-pointer">
                                     <button class="search-form_submit fas fa-search font-size18 text-white" type="submit"></button>
                                 </span>
-                                <input type="text" class="search-form_input form-control" name="s" autocomplete="off" placeholder="Type & hit enter...">
+                                <input type="text" class="search-form_input form-control" name="query" autocomplete="off" placeholder="Type & hit enter...">
                                 <span class="input-group-addon close-search"><i class="fas fa-times font-size18 margin-5px-top"></i></span>
                             </div>
                         </form>
@@ -36,12 +36,9 @@
                                     <!-- start menu area -->
                                     <ul class="navbar-nav ml-auto" id="nav" style="display: none;">
                                         <li><a href="{% url 'listings:home' %}">Home</a></li>
-                                        <li><a href="javascript:void(0)">Blog</a>
-                                            <ul>
-                                                <li><a href="blog-grid.html">Blog Grid</a></li>
-                                                <li><a href="blog-details.html">Blog Details</a></li>
-                                            </ul>
-                                        </li>
+
+                                        <li><a href="{% url 'blog:all_article' %}">Blog</a></li>
+
 
                                         <li><a href="javascript:void(0)">User Panel</a>
                                             <ul>
@@ -59,7 +56,7 @@
 
                                             </ul>
                                         </li>
-                                        <li><a href="contact-us.html">Contact</a></li>
+                                        <li><a href="{% url 'listings:contact' %}">Contact</a></li>
 
                                     </ul>
                                     <!-- end menu area -->
